@@ -7,12 +7,18 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
@@ -64,6 +70,8 @@ public class SellerScreen extends JFrame {
 	private JComboBox boxTipoCospel;
 	private JPanel panelPatente;
 	private JPanel panelLabelCospel;
+	private JButton botonCargar;
+	private JPanel panelBoton;
 	private JLabel labelCospel;
 	private JPanel panelBoxCospel;
 	private JComboBox boxPatente;
@@ -128,6 +136,7 @@ public class SellerScreen extends JFrame {
 					BorderLayout panelMensajesLayout = new BorderLayout();
 					panelMensajes.setLayout(panelMensajesLayout);
 					panelSaldo.add(panelMensajes, BorderLayout.SOUTH);
+					panelSaldo.add(getPanelBoton(), BorderLayout.CENTER);
 					panelMensajes.setPreferredSize(new java.awt.Dimension(486, 113));
 					{
 						mensajeArea = new JTextPane();
@@ -162,8 +171,7 @@ public class SellerScreen extends JFrame {
 					panelBoxPatente.setPreferredSize(new java.awt.Dimension(229, 42));
 					{
 						ComboBoxModel boxPatenteModel = 
-								new DefaultComboBoxModel(
-										new String[] { "Item One", "Item Two" });
+								new DefaultComboBoxModel(iniciarPatentes());
 						boxPatente = new JComboBox();
 						panelBoxPatente.add(boxPatente);
 						boxPatente.setModel(boxPatenteModel);
@@ -212,7 +220,35 @@ public class SellerScreen extends JFrame {
 		pack();
 		this.setSize(496, 293);
 	}
+
 	
+	private JPanel getPanelBoton() {
+		if(panelBoton == null) {
+			panelBoton = new JPanel();
+			panelBoton.add(getBotonCargar());
+		}
+		return panelBoton;
+	}
+	
+	private JButton getBotonCargar() {
+		if(botonCargar == null) {
+			botonCargar = new JButton();
+			botonCargar.setText("Crear Cospel");
+			botonCargar.setPreferredSize(new java.awt.Dimension(136, 22));
+			botonCargar.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    botonCargarAction(evt);
+                 }
+              });
+		}
+		return botonCargar;
+	}
+	
+	
+	
+	/*
+	 * Lista de posibles tipos de cospeles en la base de dato.
+	 */
 	private String[] iniciarCospelTipo(){
 		Result res = me.execQuery("SELECT tipo FROM tipos_cospeles;");
 		Vector<String> vector= new Vector<String>();
@@ -229,6 +265,63 @@ public class SellerScreen extends JFrame {
 		return tipo_cospeles;
 	}
 	
+	/*
+	 * Lista de patentes de los autos cargados en la base de datos
+	 */
+	private String[] iniciarPatentes(){
+		Result res = me.execQuery("SELECT patente FROM automoviles;");
+		Vector<String> vector= new Vector<String>();
+		for (String[] row: res){
+			for (int j=0;j<row.length;j++)
+				vector.add(row[j]);
+		}
+		String[] patentes = new String[vector.size()];
+		int i=0;
+		for (String row: vector){
+			patentes[i]=row;
+			i++;
+		}
+		return patentes;
+	}
 	
+	 public void botonCargarAction(ActionEvent evt) {
+	    Result res = me.execQuery("SELECT id_cospel FROM cospeles;");
+		Vector<String> vector= new Vector<String>();
+		for (String[] row: res){
+			for (int j=0;j<row.length;j++)
+				vector.add(row[j]);
+		}
+		//busco un id_cospel mayor y agrego uno mayor a ese (diferente a todos los demás)
+		String esaEs="1";
+		for (String s:vector){
+			if (s.compareTo(esaEs)>0)
+				esaEs =s;
+		}
+		int nuevoid = Integer.parseInt(esaEs)+1;
+		
+		//me ingresaron un número?
+		boolean es = false;
+		float saldo=0;
+		try{
+			saldo = Float.parseFloat(textSaldo.getText());
+			es=true;
+		}catch(NumberFormatException e){
+			mensajeArea.setText(mensajeArea.getText()+"\nNo puede ingresar ese saldo");
+		}
+		if (es){
+			if (saldo<100 && saldo>0){
+				String sql="INSERT INTO `cospeles` (`id_cospel`, `saldo`, `tipo`, `patente`) VALUES ("+nuevoid+", '"+saldo+"', '"+(String)boxTipoCospel.getSelectedItem()+"', '"+(String)boxPatente.getSelectedItem()+"');";
+				
+				  try
+			      {
+			         me.insertar(sql);
+			         mensajeArea.setText(mensajeArea.getText()+"\n"+"Ha creado el cospel con id"+nuevoid+" con saldo de "+saldo+" de tipo "+(String)boxTipoCospel.getSelectedItem()+" a la patente "+(String)boxPatente.getSelectedItem());
+			      }
+			      catch (SQLException ex){}
+			}
+		} else mensajeArea.setText(mensajeArea.getText()+"\nNo puede ingresar ese saldo");
+		
+	  }
+
 }
 

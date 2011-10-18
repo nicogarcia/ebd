@@ -50,4 +50,14 @@ public class User {
 	public boolean isLogged() {
 		return logged;
 	}
+	
+	public void insertar (String sql) throws SQLException{
+		try {
+			Statement stmt = con.createStatement();
+	         stmt.execute(sql);
+	         stmt.close();
+		}catch(SQLException e){
+			throw new SQLException(e.getMessage());
+		}
+	}
 }
