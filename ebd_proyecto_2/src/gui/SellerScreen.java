@@ -7,6 +7,8 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -190,13 +192,14 @@ public class SellerScreen extends JFrame {
 				}
 				
 				
-					Result r = me.execQuery("select patentes from automoviles;");				
+					
+									
 				{
 					panelBoxCospel = new JPanel();
 					panelCospel.add(panelBoxCospel, BorderLayout.EAST);
 					panelBoxCospel.setPreferredSize(new java.awt.Dimension(229, 54));
 					{
-						ComboBoxModel boxTipoCospelModel = new DefaultComboBoxModel(r.getCurrentRow());
+						ComboBoxModel boxTipoCospelModel = new DefaultComboBoxModel(iniciarCospelTipo());
 						boxTipoCospel = new JComboBox();
 						panelBoxCospel.add(boxTipoCospel);
 						boxTipoCospel.setModel(boxTipoCospelModel);
@@ -208,6 +211,22 @@ public class SellerScreen extends JFrame {
 
 		pack();
 		this.setSize(496, 293);
+	}
+	
+	private String[] iniciarCospelTipo(){
+		Result res = me.execQuery("SELECT tipo FROM tipos_cospeles;");
+		Vector<String> vector= new Vector<String>();
+		for (String[] row: res){
+			for (int j=0;j<row.length;j++)
+				vector.add(row[j]);
+		}
+		String[] tipo_cospeles = new String[vector.size()];
+		int i=0;
+		for (String row: vector){
+			tipo_cospeles[i]=row;
+			i++;
+		}
+		return tipo_cospeles;
 	}
 	
 	
