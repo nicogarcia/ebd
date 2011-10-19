@@ -21,6 +21,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import logic.User;
+import logic.ThreadHorayFecha;
 
 
 /**
@@ -78,12 +79,14 @@ public class InspectorScreen extends JFrame {
 	private JPanel panelOperaciones;
 	private JPanel panelPrincipal;
 	private User me;
-	
+	private ThreadHorayFecha thread;
 	
 	
 	public InspectorScreen(User user) {
 		me = user;
 		initGui();
+		thread = new ThreadHorayFecha(labelHora,labelDia);
+		thread.start();
 	}
 
 	private void initGui() {

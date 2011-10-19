@@ -1,30 +1,47 @@
 package logic;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JLabel;
 
-class ThreadHorayFecha extends Thread {
+public class ThreadHorayFecha extends Thread {
 	 private JLabel fecha;
 	 private JLabel hora;
+	 private Date dia;
 	
-     ThreadHorayFecha(JLabel hor,JLabel fech) {
+     public ThreadHorayFecha(JLabel hor,JLabel fech) {
     	 	hora=hor;
     	 	fecha=fech;
-    	 	
       }
  
       public void run() {
-    	  String horasYminutos = Calendar.HOUR_OF_DAY+" : "+Calendar.MINUTE;
-    	  hora.setText(horasYminutos);
-    	  hora.repaint();
-    	  String fechadiamesanio = Calendar.DATE+"/"+Calendar.MONTH+"/"+Calendar.YEAR;
-    	  fecha.setText(fechadiamesanio);
-    	  fecha.repaint();
-    	  try {
-			sleep(30000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+    	  while(true){
+	    	  hora.setText(getHoraActual());
+	    	  hora.repaint();
+	    	  fecha.setText(getFechaActual());
+	    	  fecha.repaint();
+	    	  try {
+				sleep(30000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	  }
+      }
+      
+      //Metodo usado para obtener la fecha actual
+      //@return Retorna un <STRING> con la fecha actual formato "dd/MM/yyyy"
+      public static String getFechaActual() {
+          Date ahora = new Date();
+          SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+          return formateador.format(ahora);
+      }
+
+      //Metodo usado para obtener la hora actual del sistema
+      //@return Retorna un <STRING> con la hora actual formato "hh:mm"
+      public static String getHoraActual() {
+          Date ahora = new Date();
+          SimpleDateFormat formateador = new SimpleDateFormat("hh:mm");
+          return formateador.format(ahora);
       }
 }
