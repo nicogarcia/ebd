@@ -1,33 +1,23 @@
 package gui;
-import com.cloudgarden.layout.AnchorConstraint;
-import com.cloudgarden.layout.AnchorLayout;
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyVetoException;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.LayoutStyle;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
@@ -60,7 +50,8 @@ public class SellerScreen extends JFrame {
 	private final int width = 500;
 	private final int height = 300;
 	private JPanel panel;
-	private JTextPane mensajeArea;
+	private JTextArea mensajeArea;
+	private JScrollPane scrollPanel;
 	private JTextArea textSaldo;
 	private JLabel jLabel1;
 	private JPanel panelTextSaldo;
@@ -138,11 +129,7 @@ public class SellerScreen extends JFrame {
 					panelSaldo.add(panelMensajes, BorderLayout.SOUTH);
 					panelSaldo.add(getPanelBoton(), BorderLayout.CENTER);
 					panelMensajes.setPreferredSize(new java.awt.Dimension(486, 113));
-					{
-						mensajeArea = new JTextPane();
-						panelMensajes.add(mensajeArea, BorderLayout.CENTER);
-						mensajeArea.setPreferredSize(new java.awt.Dimension(5, 21));
-					}
+					panelMensajes.add(getScrollPanel(), BorderLayout.CENTER);
 				}
 			}
 			{
@@ -300,13 +287,13 @@ public class SellerScreen extends JFrame {
 		int nuevoid = Integer.parseInt(esaEs)+1;
 		
 		//me ingresaron un número?
-		boolean es = false;
+		boolean es;
 		float saldo=0;
 		try{
 			saldo = Float.parseFloat(textSaldo.getText());
 			es=true;
 		}catch(NumberFormatException e){
-			mensajeArea.setText(mensajeArea.getText()+"\nNo puede ingresar ese saldo");
+			es=false;
 		}
 		if (es){
 			if (saldo<100 && saldo>0){
@@ -315,13 +302,29 @@ public class SellerScreen extends JFrame {
 				  try
 			      {
 			         me.insertar(sql);
-			         mensajeArea.setText(mensajeArea.getText()+"\n"+"Ha creado el cospel con id"+nuevoid+" con saldo de "+saldo+" de tipo "+(String)boxTipoCospel.getSelectedItem()+" a la patente "+(String)boxPatente.getSelectedItem());
+			         mensajeArea.setText(mensajeArea.getText()+"\n"+"Ha creado el cospel con id"+nuevoid+" con saldo de "+saldo+" de tipo "+(String)boxTipoCospel.getSelectedItem()+" a la patente "+(String)boxPatente.getSelectedItem()+".\n");
 			      }
 			      catch (SQLException ex){}
 			}
-		} else mensajeArea.setText(mensajeArea.getText()+"\nNo puede ingresar ese saldo");
+		} else mensajeArea.setText(mensajeArea.getText()+"No puede ingresar ese saldo.\n");
 		
 	  }
+	 
+	 private JScrollPane getScrollPanel() {
+		 if(scrollPanel == null) {
+			 scrollPanel = new JScrollPane();
+			 scrollPanel.setViewportView(getMensajeArea());
+		 }
+		 return scrollPanel;
+	 }
+	 
+	 private JTextArea getMensajeArea() {
+		 if(mensajeArea == null) {
+			 mensajeArea = new JTextArea();
+			 mensajeArea.setEditable(false);
+		 }
+		 return mensajeArea;
+	 }
 
 }
 
