@@ -3,6 +3,10 @@ import java.awt.BorderLayout;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -20,6 +24,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import logic.Result;
 import logic.User;
 import logic.ThreadHorayFecha;
 
@@ -42,6 +47,7 @@ public class InspectorScreen extends JFrame {
 	private final int width = 500;
 	private final int height = 300;
 	private JPanel panelLogin;
+	private JButton botonConectar;
 	private JComboBox boxParquimetro;
 	private JLabel labelParquimetro;
 	private JPanel panelParquimetroOtro;
@@ -80,10 +86,14 @@ public class InspectorScreen extends JFrame {
 	private JPanel panelPrincipal;
 	private User me;
 	private ThreadHorayFecha thread;
+	private Vector<String> patentes;
+	private int legajo;
+	private int IDAsociadoCon;
 	
 	
 	public InspectorScreen(User user) {
 		me = user;
+		patentes = new Vector<String>();
 		initGui();
 		thread = new ThreadHorayFecha(labelHora,labelDia);
 		thread.start();
@@ -247,6 +257,7 @@ public class InspectorScreen extends JFrame {
 					panelOperaciones.add(panelFechaHora, BorderLayout.NORTH);
 					panelFechaHora.setPreferredSize(new java.awt.Dimension(396, 46));
 					panelFechaHora.setLayout(panelFechaHoraLayout);
+					panelFechaHora.setBorder(new LineBorder(new java.awt.Color(0,0,0), 1, false));
 					{
 						panelHora = new JPanel();
 						panelFechaHora.add(panelHora);
@@ -281,7 +292,8 @@ public class InspectorScreen extends JFrame {
 					{
 						panelOtro = new JPanel();
 						panelParquimetro.add(panelOtro, BorderLayout.NORTH);
-						panelOtro.setPreferredSize(new java.awt.Dimension(396, 46));
+						panelOtro.setPreferredSize(new java.awt.Dimension(396, 77));
+						panelOtro.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 						{
 							labelParquimetro = new JLabel();
 							panelOtro.add(labelParquimetro);
@@ -298,10 +310,16 @@ public class InspectorScreen extends JFrame {
 							boxParquimetro.setModel(boxParquimetroModel);
 							boxParquimetro.setPreferredSize(new java.awt.Dimension(95, 22));
 						}
+						{
+							botonConectar = new JButton();
+							panelOtro.add(botonConectar);
+							botonConectar.setText("Conectar con parquimetro");
+						}
 					}
 					{
 						panelParquimetroOtro = new JPanel();
 						panelParquimetro.add(panelParquimetroOtro, BorderLayout.CENTER);
+						panelParquimetroOtro.setPreferredSize(new java.awt.Dimension(396, 88));
 					}
 				}
 			}
@@ -328,5 +346,91 @@ public class InspectorScreen extends JFrame {
 	}
 	
 	
+	public void ingresarPatente(ActionEvent evt){
+		String numero,letra;
+		numero = textNumeros.getText();
+		letra = textLetras.getText();
+		//verifico que haya ingresado bien las letras de la patente
+		if (letra.length()==3){
+			//verifico que haya tres numeros
+			if (numero.length()==3 && esNumero(numero)){
+				patentes.add(letra.concat(numero));
+				textNumeros.setText("");
+				textLetras.setText("");
+			}else{mensajeTexto.setText(mensajeTexto.getText()+"\nIngreso mal el numero de la patente"); textNumeros.setText(""); }
+		}else{mensajeTexto.setText(mensajeTexto.getText()+"\nIngreso mal las letras de la patente"); textNumeros.setText(""); }
+		
+		
+	}
+	
+	//verificador de numeros
+	private boolean esNumero(String n){
+		try{
+			int num = Integer.parseInt(n);
+			return true;
+		}catch(NumberFormatException e){
+			return false;}
+	}
+	
+	//verifica los estacionados y labra las multas
+	public void botonConectarParquimetro(ActionEvent evt){
+		String parquimetro = (String) boxParquimetro.getSelectedItem();
+		int parquiId = Integer.parseInt(parquimetro);
+		registrarAcceso(parquiId);
+		determinarNoRegistrados(parquiId);		
+	}
+	
+	
+	private void registrarAcceso(int parq){
+		 try
+	      {
+			 String fecha,hora;
+			 fecha = labelDia.getText();
+			 hora = labelHora.getText();
+			 String sql = "INSERT INTO `accede` (`legajo`, `id_parq`, `fecha`, `hora`) VALUES ("+legajo+", "+parq+", '"+fecha+"', '"+hora+":00');";
+	         me.insertar(sql);
+	         //obtengo lo que inserté recién
+	         Result re = me.execQuery("SELECT MAX( id_asociado_con ) FROM asociado_con;");
+	         Vector<String> IDasociado = new Vector<String>();
+	         for (String[] row:re){
+	        	 for (int j=0;j<row.length;j++)
+	 				IDasociado.add(row[j]);
+	         }
+	         IDAsociadoCon =Integer.parseInt(IDasociado.lastElement());
+	         mensajeTexto.setText(mensajeTexto.getText()+"Ha ingresado en el parquímetro "+parq+" a las "+hora+" del día "+fecha+".\n");
+	      }
+	      catch (SQLException ex){}
+	}
+	
+	private void determinarNoRegistrados(int id_parq){
+		Result res = me.execQuery("SELECT patente FROM estacionados NATURAL JOIN parquimetros WHERE id_parq =  '"+id_parq+"';");
+		Vector<String> registradas= new Vector<String>();
+		for (String[] row: res){
+			for (int j=0;j<row.length;j++)
+				registradas.add(row[j]);
+		}
+		String fecha,hora;
+		fecha = labelDia.getText();
+		 hora = labelHora.getText();
+		for (String pat: patentes){
+			boolean esta = false;
+			for (String reg:registradas){
+				if (reg.equals(pat))
+					esta=true;
+			}
+			if (!esta) generarMulta (pat,id_parq,fecha,hora);		
+		}
+	}
+	
+	
+	private void generarMulta(String patente,int parq,String fecha,String hora){
+		String sql = "INSERT INTO `multa` (`numero`, `fecha`, `hora`, `patente`, `id_asociado_con`) VALUES (NULL, '"+fecha+"', '"+hora+":00', '"+patente+"', "+IDAsociadoCon+");";
+		try {
+			me.insertar(sql);
+			mensajeTexto.setText(mensajeTexto.getText()+"Multa en el vehiculo con patente "+patente+" a las "+hora+" del día "+fecha);
+		} catch (SQLException e) {
+			mensajeTexto.setText(mensajeTexto.getText()+"Error al labrar la multa de la patente "+patente);
+		}
+	}
 
 }

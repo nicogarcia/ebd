@@ -278,13 +278,6 @@ public class SellerScreen extends JFrame {
 			for (int j=0;j<row.length;j++)
 				vector.add(row[j]);
 		}
-		//busco un id_cospel mayor y agrego uno mayor a ese (diferente a todos los demás)
-		String esaEs="1";
-		for (String s:vector){
-			if (s.compareTo(esaEs)>0)
-				esaEs =s;
-		}
-		int nuevoid = Integer.parseInt(esaEs)+1;
 		
 		//me ingresaron un número?
 		boolean es;
@@ -297,12 +290,12 @@ public class SellerScreen extends JFrame {
 		}
 		if (es){
 			if (saldo<100 && saldo>0){
-				String sql="INSERT INTO `cospeles` (`id_cospel`, `saldo`, `tipo`, `patente`) VALUES ("+nuevoid+", '"+saldo+"', '"+(String)boxTipoCospel.getSelectedItem()+"', '"+(String)boxPatente.getSelectedItem()+"');";
+				String sql="INSERT INTO `cospeles` (`id_cospel`, `saldo`, `tipo`, `patente`) VALUES (NULL, '"+saldo+"', '"+(String)boxTipoCospel.getSelectedItem()+"', '"+(String)boxPatente.getSelectedItem()+"');";
 				
 				  try
 			      {
 			         me.insertar(sql);
-			         mensajeArea.setText(mensajeArea.getText()+"\n"+"Ha creado el cospel con id"+nuevoid+" con saldo de "+saldo+" de tipo "+(String)boxTipoCospel.getSelectedItem()+" a la patente "+(String)boxPatente.getSelectedItem()+".\n");
+			         mensajeArea.setText(mensajeArea.getText()+"\n"+"Ha creado un nuevo cospel con saldo de "+saldo+" de tipo "+(String)boxTipoCospel.getSelectedItem()+" a la patente "+(String)boxPatente.getSelectedItem()+".\n");
 			      }
 			      catch (SQLException ex){}
 			}

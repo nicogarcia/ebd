@@ -30,10 +30,10 @@ public class ThreadHorayFecha extends Thread {
       }
       
       //Metodo usado para obtener la fecha actual
-      //@return Retorna un <STRING> con la fecha actual formato "dd/MM/yyyy"
+      //@return Retorna un <STRING> con la fecha actual formato "yyyy-MM-dd"
       public static String getFechaActual() {
           Date ahora = new Date();
-          SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+          SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
           return formateador.format(ahora);
       }
 
