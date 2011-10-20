@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Vector;
 
@@ -47,6 +48,7 @@ public class InspectorScreen extends JFrame {
 	private final int width = 500;
 	private final int height = 300;
 	private JPanel panelLogin;
+	private JButton botonSalirSecion;
 	private JButton botonConectar;
 	private JComboBox boxParquimetro;
 	private JLabel labelParquimetro;
@@ -97,6 +99,7 @@ public class InspectorScreen extends JFrame {
 		initGui();
 		thread = new ThreadHorayFecha(labelHora,labelDia);
 		thread.start();
+		patentes = new Vector<String>();
 	}
 
 	private void initGui() {
@@ -133,7 +136,7 @@ public class InspectorScreen extends JFrame {
 						labelUsuario = new JLabel();
 						panelUsuario.add(labelUsuario, BorderLayout.NORTH);
 						labelUsuario.setPreferredSize(new java.awt.Dimension(149, 31));
-						labelUsuario.setText("Nombre Usuario");
+						labelUsuario.setText("Legajo");
 						labelUsuario.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 					}
 					{
@@ -182,13 +185,26 @@ public class InspectorScreen extends JFrame {
 				}
 				{
 					panelBotonUsuario = new JPanel();
+					FlowLayout panelBotonUsuarioLayout = new FlowLayout();
 					panelLogin.add(panelBotonUsuario, BorderLayout.SOUTH);
 					panelBotonUsuario.setPreferredSize(new java.awt.Dimension(149, 110));
+					panelBotonUsuario.setLayout(panelBotonUsuarioLayout);
 					{
 						botonLogin = new JButton();
 						panelBotonUsuario.add(botonLogin);
 						botonLogin.setText("Ingresar");
 						botonLogin.setPreferredSize(new java.awt.Dimension(97, 31));
+						botonLogin.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent evt) {
+		                    botonIniciarSesion(evt);} });
+					}
+					{
+						botonSalirSecion = new JButton();
+						panelBotonUsuario.add(botonSalirSecion);
+						botonSalirSecion.setText("Salir de la secion");
+						botonSalirSecion.setPreferredSize(new java.awt.Dimension(161, 22));
+						botonSalirSecion.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent evt) {
+		                    botonCerrarSecion(evt);
+		                 } });
 					}
 				}
 			}
@@ -248,6 +264,9 @@ public class InspectorScreen extends JFrame {
 							BotonIngresar = new JButton();
 							panelBotonAgregar.add(BotonIngresar);
 							BotonIngresar.setText("Ingresar Patente");
+							BotonIngresar.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent evt) {
+			                    ingresarPatente(evt);} });
+							
 						}
 					}
 				}
@@ -298,13 +317,11 @@ public class InspectorScreen extends JFrame {
 							labelParquimetro = new JLabel();
 							panelOtro.add(labelParquimetro);
 							labelParquimetro.setText("conección a parquimetro");
-							labelParquimetro.setPreferredSize(new java.awt.Dimension(170, 21));
+							labelParquimetro.setPreferredSize(new java.awt.Dimension(205, 21));
 							labelParquimetro.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
 						}
 						{
-							ComboBoxModel boxParquimetroModel = 
-									new DefaultComboBoxModel(
-											new String[] { "Item One", "Item Two" });
+							ComboBoxModel boxParquimetroModel = new DefaultComboBoxModel(llenarParquimetros());
 							boxParquimetro = new JComboBox();
 							panelOtro.add(boxParquimetro);
 							boxParquimetro.setModel(boxParquimetroModel);
@@ -314,6 +331,10 @@ public class InspectorScreen extends JFrame {
 							botonConectar = new JButton();
 							panelOtro.add(botonConectar);
 							botonConectar.setText("Conectar con parquimetro");
+							botonConectar.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent evt) {
+				                    botonConectarParquimetro(evt);
+				                 }
+				              });
 						}
 					}
 					{
@@ -343,24 +364,27 @@ public class InspectorScreen extends JFrame {
 
 		pack();
 		this.setSize(767, 334);
+		habilitar(false);
 	}
 	
 	
 	public void ingresarPatente(ActionEvent evt){
 		String numero,letra;
-		numero = textNumeros.getText();
-		letra = textLetras.getText();
-		//verifico que haya ingresado bien las letras de la patente
-		if (letra.length()==3){
-			//verifico que haya tres numeros
-			if (numero.length()==3 && esNumero(numero)){
-				patentes.add(letra.concat(numero));
-				textNumeros.setText("");
-				textLetras.setText("");
-			}else{mensajeTexto.setText(mensajeTexto.getText()+"\nIngreso mal el numero de la patente"); textNumeros.setText(""); }
-		}else{mensajeTexto.setText(mensajeTexto.getText()+"\nIngreso mal las letras de la patente"); textNumeros.setText(""); }
-		
-		
+		if (textNumeros.getText()!=null && !textNumeros.getText().equals("") && textLetras.getText()!=null && !textLetras.getText().equals("") ){
+			numero = textNumeros.getText();
+			letra = textLetras.getText();
+			//verifico que haya ingresado bien las letras de la patente
+			if (letra.length()==3){
+				//verifico que haya tres numeros
+				if (numero.length()==3 && esNumero(numero)){
+					patentes.add(letra.concat(numero));
+					textNumeros.setText("");
+					textLetras.setText("");
+					mensajeTexto.setText(mensajeTexto.getText()+"Ingreso la patente "+letra.concat(numero)+".\n");
+				}else{mensajeTexto.setText(mensajeTexto.getText()+"Ingreso mal el numero de la patente.\n"); textNumeros.setText(""); }
+			}else{mensajeTexto.setText(mensajeTexto.getText()+"Ingreso mal las letras de la patente.\n"); textLetras.setText(""); }
+			
+		}else {mensajeTexto.setText(mensajeTexto.getText()+"Ingreso mal las letras y el número de la patente.\n"); textNumeros.setText(""); textLetras.setText("");}
 	}
 	
 	//verificador de numeros
@@ -376,8 +400,11 @@ public class InspectorScreen extends JFrame {
 	public void botonConectarParquimetro(ActionEvent evt){
 		String parquimetro = (String) boxParquimetro.getSelectedItem();
 		int parquiId = Integer.parseInt(parquimetro);
+		System.out.println("Paso por aca 1");System.out.println("Parquimetro "+parquiId);
 		registrarAcceso(parquiId);
-		determinarNoRegistrados(parquiId);		
+		 System.out.println("Paso por aca 5");
+		determinarNoRegistrados(parquiId);
+		patentes.clear();
 	}
 	
 	
@@ -387,11 +414,14 @@ public class InspectorScreen extends JFrame {
 			 String fecha,hora;
 			 fecha = labelDia.getText();
 			 hora = labelHora.getText();
+			 System.out.println("Paso por aca 2");
 			 String sql = "INSERT INTO `accede` (`legajo`, `id_parq`, `fecha`, `hora`) VALUES ("+legajo+", "+parq+", '"+fecha+"', '"+hora+":00');";
 	         me.insertar(sql);
-	         //obtengo lo que inserté recién
-	         Result re = me.execQuery("SELECT MAX( id_asociado_con ) FROM asociado_con;");
+	         System.out.println("Paso por aca 3");
+	         //obtengo el asociado con el inspector
+	         Result re = me.execQuery("SELECT id_asociado_con  FROM asociado_con WHERE legajo= '"+legajo+"';");
 	         Vector<String> IDasociado = new Vector<String>();
+	         System.out.println("Paso por aca 4");
 	         for (String[] row:re){
 	        	 for (int j=0;j<row.length;j++)
 	 				IDasociado.add(row[j]);
@@ -399,38 +429,124 @@ public class InspectorScreen extends JFrame {
 	         IDAsociadoCon =Integer.parseInt(IDasociado.lastElement());
 	         mensajeTexto.setText(mensajeTexto.getText()+"Ha ingresado en el parquímetro "+parq+" a las "+hora+" del día "+fecha+".\n");
 	      }
-	      catch (SQLException ex){}
+	      catch (SQLException ex){
+	    	  System.out.println("El error está aca.");
+	      }
 	}
 	
 	private void determinarNoRegistrados(int id_parq){
 		Result res = me.execQuery("SELECT patente FROM estacionados NATURAL JOIN parquimetros WHERE id_parq =  '"+id_parq+"';");
+		System.out.println("Paso por aca 6");
 		Vector<String> registradas= new Vector<String>();
-		for (String[] row: res){
-			for (int j=0;j<row.length;j++)
-				registradas.add(row[j]);
-		}
 		String fecha,hora;
 		fecha = labelDia.getText();
 		 hora = labelHora.getText();
-		for (String pat: patentes){
-			boolean esta = false;
-			for (String reg:registradas){
-				if (reg.equals(pat))
-					esta=true;
+		if(!res.isEmpty()){
+			System.out.println("Paso por aca 6 y medio");
+			for (String[] row: res){
+				for (int j=0;j<row.length;j++)
+					registradas.add(row[j]);
 			}
-			if (!esta) generarMulta (pat,id_parq,fecha,hora);		
+			System.out.println(" "+registradas.firstElement());
+			System.out.println("Paso por aca 7");
+			for (String pat: patentes){
+				boolean esta = false;
+				for (String reg:registradas){
+					if (reg.equals(pat))
+						esta=true;
+				}
+				if (!esta) generarMulta (pat,id_parq,fecha,hora);		
+			}
+		}else {
+			for (String pat:patentes){
+				generarMulta (pat,id_parq,fecha,hora);
+			}
 		}
+		
 	}
 	
 	
 	private void generarMulta(String patente,int parq,String fecha,String hora){
+		System.out.println("Paso por aca 8");
 		String sql = "INSERT INTO `multa` (`numero`, `fecha`, `hora`, `patente`, `id_asociado_con`) VALUES (NULL, '"+fecha+"', '"+hora+":00', '"+patente+"', "+IDAsociadoCon+");";
 		try {
 			me.insertar(sql);
-			mensajeTexto.setText(mensajeTexto.getText()+"Multa en el vehiculo con patente "+patente+" a las "+hora+" del día "+fecha);
+			//obtengo la multa recien insertada con la calle y altura
+			Result res = me.execQuery("SELECT max(numero) FROM multa;");
+			Result res2 = me.execQuery("SELECT calle,altura FROM parquimetros WHERE id_parq= '"+parq+"';");
+			Vector<String> multavec= new Vector<String>();
+			for (String[] row: res){
+				for (int j=0;j<row.length;j++)
+					multavec.add(row[j]);
+			} Vector<String> callAlVec= new Vector<String>();
+			for (String[] row: res2){
+				for (int j=0;j<row.length;j++)
+					callAlVec.add(row[j]);
+			}
+			mensajeTexto.setText(mensajeTexto.getText()+"Multa numero "+multavec.firstElement()+" en el vehiculo con patente "+patente+" a las "+hora+" del día "+fecha+" en la calle "+callAlVec.get(0)+" altura "+callAlVec.get(1)+".\n");
 		} catch (SQLException e) {
-			mensajeTexto.setText(mensajeTexto.getText()+"Error al labrar la multa de la patente "+patente);
+			mensajeTexto.setText(mensajeTexto.getText()+"Error al labrar la multa de la patente "+patente+".\n");
 		}
 	}
+	
+	public void botonIniciarSesion(ActionEvent evt){		
+		if (textUsuario.getText()!=null && !textUsuario.getText().equals("") ){
+			String leg,pass;
+			leg=textUsuario.getText();
+			pass=textPass.getText();
+			 Result re = me.execQuery("SELECT PASSWORD FROM inspectores WHERE legajo = '"+leg+"'");
+	         Vector<String> contra = new Vector<String>();
+	         for (String[] row:re){
+	        	 for (int j=0;j<row.length;j++)
+	 				contra.add(row[j]);
+	         }
+	         if (contra.lastElement().equals(pass)){
+	        	habilitar(true);
+	        	mensajeTexto.setText(mensajeTexto.getText()+"Ha ingresa con el legajo "+leg+".\n");
+	        	legajo=Integer.parseInt(leg);
+	         }else {
+	        	 mensajeTexto.setText(mensajeTexto.getText()+"Ha ingresa mal el legajo o contraseña .\n");
+	        	 textPass.setText("");
+	         }
+		}else {
+			mensajeTexto.setText(mensajeTexto.getText()+"Ha ingresa mal el legajo o contraseña .\n");
+       	 	textPass.setText("");
+		}
+	}
+	
+	private void habilitar(boolean h) {		
+			textLetras.setEnabled(h);
+			textNumeros.setEnabled(h);
+			BotonIngresar.setEnabled(h);
+			boxParquimetro.setEnabled(h);
+			botonConectar.setEnabled(h);
+			botonSalirSecion.setEnabled(h);
+			textUsuario.setEnabled(!h);
+			textPass.setEnabled(!h);
+			botonLogin.setEnabled(!h);		
+	}
+	
+	public void botonCerrarSecion(ActionEvent evt){
+		habilitar(false);
+		patentes.clear();
+		IDAsociadoCon=0;
+	}
+	
+	private String [] llenarParquimetros(){
+		Result res = me.execQuery("SELECT id_parq FROM parquimetros;");
+		Vector<String> vector= new Vector<String>();
+		for (String[] row: res){
+			for (int j=0;j<row.length;j++)
+				vector.add(row[j]);
+		}
+		String[] stringParquimetros = new String[vector.size()];
+		int i=0;
+		for (String row: vector){
+			stringParquimetros[i]=row;
+			i++;
+		}
+		return stringParquimetros;
+}
+	
 
 }

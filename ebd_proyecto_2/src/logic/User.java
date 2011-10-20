@@ -42,7 +42,8 @@ public class User {
 		try {
 			rs = con.createStatement().executeQuery(query);
 		} catch (SQLException ex) {
-			Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+			System.out.println("Error en User:ExcecQuery");
+			//Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return new Result(rs);
 	}
@@ -57,7 +58,8 @@ public class User {
 	         stmt.execute(sql);
 	         stmt.close();
 		}catch(SQLException e){
-			throw new SQLException(e.getMessage());
+			System.out.println("Error en User:insertar");
+			//throw new SQLException("Error de incersion!!");
 		}
 	}
 }
