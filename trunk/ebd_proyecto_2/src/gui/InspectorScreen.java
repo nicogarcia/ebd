@@ -435,34 +435,15 @@ public class InspectorScreen extends JFrame {
 	}
 	
 	private void determinarNoRegistrados(int id_parq){
-		Result res = me.execQuery("SELECT patente FROM estacionados NATURAL JOIN parquimetros WHERE id_parq =  '"+id_parq+"';");
 		System.out.println("Paso por aca 6");
-		Vector<String> registradas= new Vector<String>();
 		String fecha,hora;
 		fecha = labelDia.getText();
-		 hora = labelHora.getText();
-		if(!res.isEmpty()){
-			System.out.println("Paso por aca 6 y medio");
-			for (String[] row: res){
-				for (int j=0;j<row.length;j++)
-					registradas.add(row[j]);
-			}
-			System.out.println(" "+registradas.firstElement());
-			System.out.println("Paso por aca 7");
-			for (String pat: patentes){
-				boolean esta = false;
-				for (String reg:registradas){
-					if (reg.equals(pat))
-						esta=true;
-				}
-				if (!esta) generarMulta (pat,id_parq,fecha,hora);		
-			}
-		}else {
-			for (String pat:patentes){
+		hora = labelHora.getText();		
+		System.out.println("Paso por aca 7");
+		for (String pat: patentes){
+			if(me.execQuery("SELECT patente FROM estacionados NATURAL JOIN parquimetros WHERE id_parq =  '"+id_parq+"' AND patente = '"+pat+"';").isEmpty())
 				generarMulta (pat,id_parq,fecha,hora);
-			}
-		}
-		
+		}		
 	}
 	
 	

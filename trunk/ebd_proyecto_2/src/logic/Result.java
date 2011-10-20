@@ -73,14 +73,14 @@ public class Result implements Iterable<String[]> {
 	
 	public boolean isEmpty(){
 		try {
-			if(rs.getRow()<=1){
-				return true;
+			if(rs.next()){
+				return false;
 			}
 		} catch (SQLException e) {
 			System.out.println("Error en Result::isEmpty");
 			//e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 
 
