@@ -7,12 +7,12 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class User {
 
-	private String usuario;
-	private Connection con;
-	private boolean logged;
+	String usuario;
+	Connection con;
+	boolean logged;
+	boolean inspector = false;
 
 	public User(String usuario, String clave, String uri) {
 		this.usuario = usuario;
@@ -29,10 +29,10 @@ public class User {
 		if (isLogged()) {
 			if (usuario.equals("admin")) {
 				new AdminScreen(this);
-			} else if (usuario.equals("inspector")) {
-				new InspectorScreen(this);
 			} else if (usuario.equals("venta")) {
 				new SellerScreen(this);
+			} else if (inspector) {
+				new InspectorScreen(this);
 			}
 		}
 	}
@@ -42,24 +42,29 @@ public class User {
 		try {
 			rs = con.createStatement().executeQuery(query);
 		} catch (SQLException ex) {
-			System.out.println("Error en User:ExcecQuery");
-			//Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return new Result(rs);
+	}
+
+	public boolean execInsert(String sql) {
+		Statement stmt;
+		try {
+			stmt = con.createStatement();
+			stmt.execute(sql);
+			stmt.close();
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
 	}
 
 	public boolean isLogged() {
 		return logged;
 	}
-	
-	public void insertar (String sql) throws SQLException{
-		try {
-			Statement stmt = con.createStatement();
-	         stmt.execute(sql);
-	         stmt.close();
-		}catch(SQLException e){
-			System.out.println("Error en User:insertar");
-			//throw new SQLException("Error de incersion!!");
-		}
+
+	public String getUsuario() {
+		return usuario;
 	}
+
 }

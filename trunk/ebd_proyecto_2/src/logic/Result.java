@@ -8,33 +8,33 @@ public class Result implements Iterable<String[]> {
 
 	private int col_count = 0;
 	private String row[];
-
+	private boolean hasFailed = false;
 	private ResultSet rs;
 
-	//FIXME Add a successful result flag
-	//FIXME Try to remove the most tries
-	
+	// FIXME Try to remove the most tries
+
 	public Result(ResultSet resultSet) {
 		this.rs = resultSet;
 		try {
-			col_count = rs.getMetaData().getColumnCount();
+			if (!isLast())
+				col_count = rs.getMetaData().getColumnCount();
 			row = new String[col_count];
 		} catch (SQLException e) {
-			System.out.println("Error en Result:result");
-			//System.out.println(e.getMessage());
+			hasFailed = true;
+			System.out.println(e.getMessage());
 		}
 	}
 
 	public String[] getCurrentRow() {
 		try {
-			rs.next();
-			for (int i = 0; i < col_count; i++) {
-				row[i] = rs.getString(i + 1);
+			if (!rs.isLast()) {
+				rs.next();
+				for (int i = 0; i < col_count; i++) {
+					row[i] = rs.getString(i + 1);
+				}
 			}
 		} catch (SQLException e) {
-			System.out.println("Error en Result:getCurrentRow");
-			System.exit(-1);
-			//System.out.println(e.getMessage());
+			return null;
 		}
 		return row;
 	}
@@ -46,44 +46,54 @@ public class Result implements Iterable<String[]> {
 				ret[i] = rs.getMetaData().getColumnLabel(i + 1);
 			}
 		} catch (SQLException e) {
-			System.out.println("Error en Result:getColumLabels");
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		return ret;
+	}
+
+	public void closeQuery() {
+		try {
+			rs.close();
+		} catch (SQLException e) {
+		}
 	}
 
 	public int getColumnCount() {
 		return col_count;
 	}
 
+	public boolean hasFailed() {
+		return hasFailed;
+	}
+
 	public Iterator<String[]> iterator() {
 		return new ResultIterator(this);
 	}
+
 
 	public boolean isLast() {
 		boolean ret = false;
 		try {
 			ret = rs.isLast();
 		} catch (SQLException e) {
-			System.out.println("Error en Result:isLast");
-			//System.out.println(e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		return ret;
 	}
 	
-	public boolean isEmpty(){
-		try {
-			if(rs.next()){
-				return false;
-			}
-		} catch (SQLException e) {
-			System.out.println("Error en Result::isEmpty");
-			//e.printStackTrace();
-		}
-		return true;
+	public void setFailed() {
+		hasFailed = true;
 	}
 
-
+	public boolean isEmpty() {
+		try {
+			return !rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	private class ResultIterator implements Iterator<String[]> {
 
 		Result result;
@@ -102,7 +112,6 @@ public class Result implements Iterable<String[]> {
 
 		public void remove() {
 		}
-		
 	}
 
 }
