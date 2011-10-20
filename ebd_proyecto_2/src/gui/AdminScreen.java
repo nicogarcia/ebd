@@ -22,7 +22,8 @@ import javax.swing.table.JTableHeader;
 import logic.Result;
 import logic.User;
 
-public class AdminScreen extends JFrame implements ActionListener, ListSelectionListener {
+public class AdminScreen extends JFrame implements ActionListener,
+		ListSelectionListener {
 
 	User me;
 
@@ -57,7 +58,7 @@ public class AdminScreen extends JFrame implements ActionListener, ListSelection
 
 		tablesListModel = new DefaultListModel();
 		tableList = new JList();
-		
+
 		refreshTables();
 		tableList.addListSelectionListener(this);
 		tableList.setModel(tablesListModel);
@@ -67,7 +68,7 @@ public class AdminScreen extends JFrame implements ActionListener, ListSelection
 		tableAttrs = new JList();
 		tableAttrs.setBorder(new LineBorder(Color.black));
 		tableAttrs.setModel(tablesAttrListModel);
-		
+
 		tableList.setSelectedIndex(0);
 		refreshAttributes();
 
@@ -83,29 +84,32 @@ public class AdminScreen extends JFrame implements ActionListener, ListSelection
 		setTitle("Sistema de Parquimetros - Usuario: admin");
 		setPreferredSize(new Dimension(width, height));
 		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
-		
+
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 	}
-	
+
 	public void refreshAttributes() {
-		Result res = me.execQuery("describe "+ tableList.getSelectedValue().toString());
-		
+		Result res = me.execQuery("describe "
+				+ tableList.getSelectedValue().toString());
+
 		tablesAttrListModel.removeAllElements();
-		
+
 		for (String[] strings : res) {
 			tablesAttrListModel.addElement(strings[0]);
-		}	
+		}
+		res.closeQuery();
 	}
-	
+
 	public void refreshTables() {
 		Result r = me.execQuery("show tables");
 		for (String[] strings : r) {
 			tablesListModel.addElement(strings[0]);
 		}
+		r.closeQuery();
 	}
-	
+
 	public void valueChanged(ListSelectionEvent arg0) {
 		refreshAttributes();
 	}
@@ -122,6 +126,8 @@ public class AdminScreen extends JFrame implements ActionListener, ListSelection
 		for (String[] row : res) {
 			resultTableModel.addRow(row);
 		}
+
+		res.closeQuery();
 	}
 
 	private final int width = 500;

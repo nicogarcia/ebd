@@ -1,4 +1,5 @@
 package gui;
+
 import java.awt.BorderLayout;
 
 import java.awt.event.ActionEvent;
@@ -24,29 +25,26 @@ import javax.swing.border.LineBorder;
 import logic.Result;
 import logic.User;
 
-
 /**
-* This code was edited or generated using CloudGarden's Jigloo
-* SWT/Swing GUI Builder, which is free for non-commercial
-* use. If Jigloo is being used commercially (ie, by a corporation,
-* company or business for any purpose whatever) then you
-* should purchase a license for each developer using Jigloo.
-* Please visit www.cloudgarden.com for details.
-* Use of Jigloo implies acceptance of these licensing terms.
-* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
-* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
-* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
-*/
+ * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
+ * Builder, which is free for non-commercial use. If Jigloo is being used
+ * commercially (ie, by a corporation, company or business for any purpose
+ * whatever) then you should purchase a license for each developer using Jigloo.
+ * Please visit www.cloudgarden.com for details. Use of Jigloo implies
+ * acceptance of these licensing terms. A COMMERCIAL LICENSE HAS NOT BEEN
+ * PURCHASED FOR THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED LEGALLY FOR
+ * ANY CORPORATE OR COMMERCIAL PURPOSE.
+ */
 public class SellerScreen extends JFrame {
-	
+
 	public SellerScreen(User user) {
 
-		me=user;
+		me = user;
 		initGui();
-	}	
-	
+	}
+
 	private User me;
-	
+
 	private final int width = 500;
 	private final int height = 300;
 	private JPanel panel;
@@ -71,8 +69,7 @@ public class SellerScreen extends JFrame {
 	private JPanel panelLabelPatente;
 	private JPanel panelSaldo;
 	private JPanel panelCospel;
-	
-	
+
 	private void initGui() {
 
 		setTitle("Sistema de Parquimetros - Usuario: Vendedor");
@@ -95,30 +92,37 @@ public class SellerScreen extends JFrame {
 					BorderLayout panelSaldosaldoLayout = new BorderLayout();
 					panelSaldosaldo.setLayout(panelSaldosaldoLayout);
 					panelSaldo.add(panelSaldosaldo, BorderLayout.NORTH);
-					panelSaldosaldo.setPreferredSize(new java.awt.Dimension(490, 38));
-					panelSaldosaldo.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+					panelSaldosaldo.setPreferredSize(new java.awt.Dimension(
+							490, 38));
+					panelSaldosaldo.setBorder(BorderFactory
+							.createBevelBorder(BevelBorder.LOWERED));
 					{
 						labelSaldo = new JPanel();
 						BorderLayout labelSaldoLayout = new BorderLayout();
 						labelSaldo.setLayout(labelSaldoLayout);
 						panelSaldosaldo.add(labelSaldo, BorderLayout.WEST);
-						labelSaldo.setPreferredSize(new java.awt.Dimension(240, 48));
+						labelSaldo.setPreferredSize(new java.awt.Dimension(240,
+								48));
 						{
 							jLabel1 = new JLabel();
 							labelSaldo.add(jLabel1, BorderLayout.EAST);
 							jLabel1.setText("Saldo");
-							jLabel1.setPreferredSize(new java.awt.Dimension(194, 38));
+							jLabel1.setPreferredSize(new java.awt.Dimension(
+									194, 38));
 						}
 					}
 					{
 						panelTextSaldo = new JPanel();
 						panelSaldosaldo.add(panelTextSaldo, BorderLayout.EAST);
-						panelTextSaldo.setPreferredSize(new java.awt.Dimension(240, 48));
+						panelTextSaldo.setPreferredSize(new java.awt.Dimension(
+								240, 48));
 						{
 							textSaldo = new JTextArea();
 							panelTextSaldo.add(textSaldo);
-							textSaldo.setPreferredSize(new java.awt.Dimension(87, 19));
-							textSaldo.setBorder(new LineBorder(new java.awt.Color(0,0,0), 1, false));
+							textSaldo.setPreferredSize(new java.awt.Dimension(
+									87, 19));
+							textSaldo.setBorder(new LineBorder(
+									new java.awt.Color(0, 0, 0), 1, false));
 						}
 					}
 				}
@@ -128,7 +132,8 @@ public class SellerScreen extends JFrame {
 					panelMensajes.setLayout(panelMensajesLayout);
 					panelSaldo.add(panelMensajes, BorderLayout.SOUTH);
 					panelSaldo.add(getPanelBoton(), BorderLayout.CENTER);
-					panelMensajes.setPreferredSize(new java.awt.Dimension(486, 113));
+					panelMensajes.setPreferredSize(new java.awt.Dimension(486,
+							113));
 					panelMensajes.add(getScrollPanel(), BorderLayout.CENTER);
 				}
 			}
@@ -138,31 +143,34 @@ public class SellerScreen extends JFrame {
 				BorderLayout panelPatenteLayout = new BorderLayout();
 				panelPatente.setLayout(panelPatenteLayout);
 				panelPatente.setPreferredSize(new java.awt.Dimension(490, 42));
-				panelPatente.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+				panelPatente.setBorder(BorderFactory
+						.createBevelBorder(BevelBorder.LOWERED));
 				{
 					panelLabelPatente = new JPanel();
 					BorderLayout panelLabelPatenteLayout = new BorderLayout();
 					panelLabelPatente.setLayout(panelLabelPatenteLayout);
 					panelPatente.add(panelLabelPatente, BorderLayout.WEST);
-					panelLabelPatente.setPreferredSize(new java.awt.Dimension(234, 42));
+					panelLabelPatente.setPreferredSize(new java.awt.Dimension(
+							234, 42));
 					{
 						labelPatente = new JLabel();
 						panelLabelPatente.add(labelPatente, BorderLayout.EAST);
 						labelPatente.setText("Patente del cospel");
-						labelPatente.setPreferredSize(new java.awt.Dimension(184, 42));
+						labelPatente.setPreferredSize(new java.awt.Dimension(
+								184, 42));
 					}
 				}
 				{
 					panelBoxPatente = new JPanel();
 					panelPatente.add(panelBoxPatente, BorderLayout.EAST);
-					panelBoxPatente.setPreferredSize(new java.awt.Dimension(229, 42));
+					panelBoxPatente.setPreferredSize(new java.awt.Dimension(
+							229, 42));
 					{
-						ComboBoxModel boxPatenteModel = 
-								new DefaultComboBoxModel(iniciarPatentes());
 						boxPatente = new JComboBox();
 						panelBoxPatente.add(boxPatente);
-						boxPatente.setModel(boxPatenteModel);
-						boxPatente.setPreferredSize(new java.awt.Dimension(103, 25));
+						iniciarPatentes();
+						boxPatente.setPreferredSize(new java.awt.Dimension(103,
+								25));
 					}
 				}
 			}
@@ -177,28 +185,28 @@ public class SellerScreen extends JFrame {
 					BorderLayout panelLabelCospelLayout = new BorderLayout();
 					panelLabelCospel.setLayout(panelLabelCospelLayout);
 					panelCospel.add(panelLabelCospel, BorderLayout.WEST);
-					panelLabelCospel.setPreferredSize(new java.awt.Dimension(232, 54));
+					panelLabelCospel.setPreferredSize(new java.awt.Dimension(
+							232, 54));
 					{
 						labelCospel = new JLabel();
 						panelLabelCospel.add(labelCospel, BorderLayout.EAST);
 						labelCospel.setText("Tipo de cospel");
-						labelCospel.setPreferredSize(new java.awt.Dimension(185, 42));
+						labelCospel.setPreferredSize(new java.awt.Dimension(
+								185, 42));
 					}
 				}
-				
-				
-					
-									
+
 				{
 					panelBoxCospel = new JPanel();
 					panelCospel.add(panelBoxCospel, BorderLayout.EAST);
-					panelBoxCospel.setPreferredSize(new java.awt.Dimension(229, 54));
+					panelBoxCospel.setPreferredSize(new java.awt.Dimension(229,
+							54));
 					{
-						ComboBoxModel boxTipoCospelModel = new DefaultComboBoxModel(iniciarCospelTipo());
 						boxTipoCospel = new JComboBox();
 						panelBoxCospel.add(boxTipoCospel);
-						boxTipoCospel.setModel(boxTipoCospelModel);
-						boxTipoCospel.setPreferredSize(new java.awt.Dimension(104, 26));
+						iniciarCospelTipo();
+						boxTipoCospel.setPreferredSize(new java.awt.Dimension(
+								104, 26));
 					}
 				}
 			}
@@ -208,116 +216,108 @@ public class SellerScreen extends JFrame {
 		this.setSize(496, 293);
 	}
 
-	
 	private JPanel getPanelBoton() {
-		if(panelBoton == null) {
+		if (panelBoton == null) {
 			panelBoton = new JPanel();
 			panelBoton.add(getBotonCargar());
 		}
 		return panelBoton;
 	}
-	
+
 	private JButton getBotonCargar() {
-		if(botonCargar == null) {
+		if (botonCargar == null) {
 			botonCargar = new JButton();
 			botonCargar.setText("Crear Cospel");
 			botonCargar.setPreferredSize(new java.awt.Dimension(136, 22));
 			botonCargar.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    botonCargarAction(evt);
-                 }
-              });
+				public void actionPerformed(ActionEvent evt) {
+					botonCargarAction(evt);
+				}
+			});
 		}
 		return botonCargar;
 	}
-	
-	
-	
+
 	/*
 	 * Lista de posibles tipos de cospeles en la base de dato.
 	 */
-	private String[] iniciarCospelTipo(){
+	private void iniciarCospelTipo() {
 		Result res = me.execQuery("SELECT tipo FROM tipos_cospeles;");
-		Vector<String> vector= new Vector<String>();
-		for (String[] row: res){
-			for (int j=0;j<row.length;j++)
-				vector.add(row[j]);
+
+		DefaultComboBoxModel cbm = new DefaultComboBoxModel();
+
+		for (String[] row : res) {
+			cbm.addElement(row[0]);
 		}
-		String[] tipo_cospeles = new String[vector.size()];
-		int i=0;
-		for (String row: vector){
-			tipo_cospeles[i]=row;
-			i++;
-		}
-		return tipo_cospeles;
+		boxTipoCospel.setModel(cbm);
+
+		res.closeQuery();
 	}
-	
+
 	/*
 	 * Lista de patentes de los autos cargados en la base de datos
 	 */
-	private String[] iniciarPatentes(){
+	private void iniciarPatentes() {
 		Result res = me.execQuery("SELECT patente FROM automoviles;");
-		Vector<String> vector= new Vector<String>();
-		for (String[] row: res){
-			for (int j=0;j<row.length;j++)
-				vector.add(row[j]);
+
+		DefaultComboBoxModel cbm = new DefaultComboBoxModel();
+
+		for (String[] row : res) {
+			cbm.addElement(row[0]);
 		}
-		String[] patentes = new String[vector.size()];
-		int i=0;
-		for (String row: vector){
-			patentes[i]=row;
-			i++;
-		}
-		return patentes;
+
+		boxPatente.setModel(cbm);
+
+		res.closeQuery();
 	}
-	
-	 public void botonCargarAction(ActionEvent evt) {
-	    Result res = me.execQuery("SELECT id_cospel FROM cospeles;");
-		Vector<String> vector= new Vector<String>();
-		for (String[] row: res){
-			for (int j=0;j<row.length;j++)
-				vector.add(row[j]);
-		}
-		
-		//me ingresaron un número?
+
+	public void botonCargarAction(ActionEvent evt) {
+		// me ingresaron un número?
 		boolean es;
-		float saldo=0;
-		try{
+		float saldo = 0;
+		try {
 			saldo = Float.parseFloat(textSaldo.getText());
-			es=true;
-		}catch(NumberFormatException e){
-			es=false;
+			es = true;
+		} catch (NumberFormatException e) {
+			es = false;
 		}
-		if (es){
-			if (saldo<100 && saldo>0){
-				String sql="INSERT INTO `cospeles` (`id_cospel`, `saldo`, `tipo`, `patente`) VALUES (NULL, '"+saldo+"', '"+(String)boxTipoCospel.getSelectedItem()+"', '"+(String)boxPatente.getSelectedItem()+"');";
-				
-				  try
-			      {
-			         me.insertar(sql);
-			         mensajeArea.setText(mensajeArea.getText()+"\n"+"Ha creado un nuevo cospel con saldo de "+saldo+" de tipo "+(String)boxTipoCospel.getSelectedItem()+" a la patente "+(String)boxPatente.getSelectedItem()+".\n");
-			      }
-			      catch (SQLException ex){}
+		if (es) {
+			if (saldo < 100 && saldo > 0) {
+				String sql = "INSERT INTO `cospeles` (`id_cospel`, `saldo`, `tipo`, `patente`) VALUES (NULL, '"
+						+ saldo
+						+ "', '"
+						+ (String) boxTipoCospel.getSelectedItem()
+						+ "', '"
+						+ (String) boxPatente.getSelectedItem() + "');";
+
+				me.execInsert(sql);
+				mensajeArea.setText(mensajeArea.getText() + "\n"
+						+ "Ha creado un nuevo cospel con saldo de " + saldo
+						+ " de tipo "
+						+ (String) boxTipoCospel.getSelectedItem()
+						+ " a la patente "
+						+ (String) boxPatente.getSelectedItem() + ".\n");
 			}
-		} else mensajeArea.setText(mensajeArea.getText()+"No puede ingresar ese saldo.\n");
-		
-	  }
-	 
-	 private JScrollPane getScrollPanel() {
-		 if(scrollPanel == null) {
-			 scrollPanel = new JScrollPane();
-			 scrollPanel.setViewportView(getMensajeArea());
-		 }
-		 return scrollPanel;
-	 }
-	 
-	 private JTextArea getMensajeArea() {
-		 if(mensajeArea == null) {
-			 mensajeArea = new JTextArea();
-			 mensajeArea.setEditable(false);
-		 }
-		 return mensajeArea;
-	 }
+		} else
+			mensajeArea.setText(mensajeArea.getText()
+					+ "No puede ingresar ese saldo.\n");
+
+	}
+
+	private JScrollPane getScrollPanel() {
+		if (scrollPanel == null) {
+			scrollPanel = new JScrollPane();
+			scrollPanel.setViewportView(getMensajeArea());
+		}
+		return scrollPanel;
+	}
+
+	private JTextArea getMensajeArea() {
+		if (mensajeArea == null) {
+			mensajeArea = new JTextArea();
+			mensajeArea.setEditable(false);
+		}
+		return mensajeArea;
+	}
 
 }
-

@@ -23,7 +23,10 @@ public class DBAccess {
 		}
 	}
 	
-	public static User login(String usuario, String password) {
+	public static User login(String usuario, String password, boolean inspector) {
+		if(inspector) {
+			return new InspectorUser(usuario, password, uriConexion + "parquimetros");
+		}
 		return new User(usuario, password, uriConexion + "parquimetros");
 	}
 }
