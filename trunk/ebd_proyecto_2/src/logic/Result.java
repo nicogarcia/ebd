@@ -20,7 +20,8 @@ public class Result implements Iterable<String[]> {
 			col_count = rs.getMetaData().getColumnCount();
 			row = new String[col_count];
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Error en Result:result");
+			//System.out.println(e.getMessage());
 		}
 	}
 
@@ -31,7 +32,9 @@ public class Result implements Iterable<String[]> {
 				row[i] = rs.getString(i + 1);
 			}
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Error en Result:getCurrentRow");
+			System.exit(-1);
+			//System.out.println(e.getMessage());
 		}
 		return row;
 	}
@@ -43,7 +46,8 @@ public class Result implements Iterable<String[]> {
 				ret[i] = rs.getMetaData().getColumnLabel(i + 1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Error en Result:getColumLabels");
+			//e.printStackTrace();
 		}
 		return ret;
 	}
@@ -61,10 +65,24 @@ public class Result implements Iterable<String[]> {
 		try {
 			ret = rs.isLast();
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			System.out.println("Error en Result:isLast");
+			//System.out.println(e.getMessage());
 		}
 		return ret;
 	}
+	
+	public boolean isEmpty(){
+		try {
+			if(rs.getRow()<=1){
+				return true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error en Result::isEmpty");
+			//e.printStackTrace();
+		}
+		return false;
+	}
+
 
 	private class ResultIterator implements Iterator<String[]> {
 
@@ -84,6 +102,7 @@ public class Result implements Iterable<String[]> {
 
 		public void remove() {
 		}
+		
 	}
 
 }
