@@ -89,7 +89,7 @@ public class InspectorScreen extends JFrame {
 			panelPrincipal.setPreferredSize(new java.awt.Dimension(757, 123));
 			{
 				panelTexto = new JPanel();
-				panelPrincipal.add(panelTexto, BorderLayout.SOUTH);
+				panelPrincipal.add(panelTexto, BorderLayout.CENTER);
 				BorderLayout panelTextoLayout = new BorderLayout();
 				panelTexto.setLayout(panelTextoLayout);
 				panelTexto.setPreferredSize(new java.awt.Dimension(749, 329));
@@ -104,7 +104,7 @@ public class InspectorScreen extends JFrame {
 			}
 			{
 				panelOperaciones = new JPanel();
-				panelPrincipal.add(panelOperaciones, BorderLayout.CENTER);
+				panelPrincipal.add(panelOperaciones, BorderLayout.NORTH);
 				BorderLayout panelOperacionesLayout = new BorderLayout();
 				panelOperaciones.setLayout(panelOperacionesLayout);
 				panelOperaciones.setPreferredSize(new java.awt.Dimension(749, 54));
@@ -190,9 +190,7 @@ public class InspectorScreen extends JFrame {
 						boxParquimetro = new JComboBox();
 						panelParquimetro.add(boxParquimetro);
 						llenarParquimetros();
-						boxParquimetro
-						.setPreferredSize(new java.awt.Dimension(
-								95, 22));
+						boxParquimetro.setPreferredSize(new java.awt.Dimension(62, 22));
 					}
 					{
 						botonConectar = new JButton();
@@ -205,6 +203,7 @@ public class InspectorScreen extends JFrame {
 							}
 						});
 						botonConectar.setText("Conectar");
+						botonConectar.setPreferredSize(new java.awt.Dimension(109, 22));
 					}
 				}
 			}
