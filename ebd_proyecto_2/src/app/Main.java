@@ -24,6 +24,8 @@ public class Main {
 		}*/
 
 		// new StartScreen();
+		
+		//FIXME BORRAR CONTRASEÑAS!!
 		new LoginScreen();
 	}
 

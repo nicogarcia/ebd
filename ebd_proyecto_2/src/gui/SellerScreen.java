@@ -121,7 +121,7 @@ public class SellerScreen extends JFrame {
 	 * Lista de posibles tipos de cospeles en la base de dato.
 	 */
 	private void iniciarCospelTipo() {
-		Result res = me.execQuery("SELECT tipo FROM tipos_cospeles;");
+		Result res = me.execute("SELECT tipo FROM tipos_cospeles;");
 
 		DefaultComboBoxModel cbm = new DefaultComboBoxModel();
 
@@ -137,7 +137,7 @@ public class SellerScreen extends JFrame {
 	 * Lista de patentes de los autos cargados en la base de datos
 	 */
 	private void iniciarPatentes() {
-		Result res = me.execQuery("SELECT patente FROM automoviles;");
+		Result res = me.execute("SELECT patente FROM automoviles;");
 
 		DefaultComboBoxModel cbm = new DefaultComboBoxModel();
 
@@ -169,7 +169,7 @@ public class SellerScreen extends JFrame {
 						+ "', '"
 						+ (String) boxPatente.getSelectedItem() + "');";
 
-				me.execInsert(sql);
+				me.execute(sql);
 				mensajeArea.setText(mensajeArea.getText() + "\n"
 						+ "Ha creado un nuevo cospel con saldo de " + saldo
 						+ " de tipo "
