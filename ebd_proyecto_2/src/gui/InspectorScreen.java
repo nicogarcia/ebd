@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
 import logic.InspectorUser;
@@ -43,7 +44,6 @@ public class InspectorScreen extends JFrame {
 	private final int height = 300;
 	private JButton botonConectar;
 	private JComboBox boxParquimetro;
-	private JLabel labelParquimetro;
 	private JButton BotonIngresar;
 	private JTextField textLetras;
 	private JPanel panelTextos;
@@ -53,11 +53,12 @@ public class InspectorScreen extends JFrame {
 	private JPanel panelHora;
 	private JPanel panelFechaHora;
 	private JPanel panelParquimetro;
-	private JPanel panelIngreso;
-	private JTextArea mensajeTexto;
-	private JScrollPane panelScrollTexto;
 	private JPanel panelTexto;
 	private JPanel panelOperaciones;
+	private JLabel labelF;
+	private JTextArea mensajeTexto;
+	private JScrollPane jScrollPane1;
+	private JLabel labelH;
 	private JPanel panelPrincipal;
 	private InspectorUser me;
 	private ThreadHorayFecha thread;
@@ -77,7 +78,7 @@ public class InspectorScreen extends JFrame {
 	private void initGui() {
 
 		setTitle("Sistema de Parquimetros - Usuario: Inspector");
-		this.setPreferredSize(new java.awt.Dimension(759, 424));
+		this.setPreferredSize(new java.awt.Dimension(763, 428));
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		{
@@ -91,14 +92,13 @@ public class InspectorScreen extends JFrame {
 				panelPrincipal.add(panelTexto, BorderLayout.SOUTH);
 				BorderLayout panelTextoLayout = new BorderLayout();
 				panelTexto.setLayout(panelTextoLayout);
-				panelTexto.setPreferredSize(new java.awt.Dimension(749, 287));
+				panelTexto.setPreferredSize(new java.awt.Dimension(749, 329));
 				{
-					panelScrollTexto = new JScrollPane();
-					panelTexto.add(panelScrollTexto, BorderLayout.CENTER);
+					jScrollPane1 = new JScrollPane();
+					panelTexto.add(jScrollPane1, BorderLayout.CENTER);
 					{
 						mensajeTexto = new JTextArea();
-						panelScrollTexto.setViewportView(mensajeTexto);
-						mensajeTexto.setEditable(false);
+						jScrollPane1.setViewportView(mensajeTexto);
 					}
 				}
 			}
@@ -107,93 +107,85 @@ public class InspectorScreen extends JFrame {
 				panelPrincipal.add(panelOperaciones, BorderLayout.CENTER);
 				BorderLayout panelOperacionesLayout = new BorderLayout();
 				panelOperaciones.setLayout(panelOperacionesLayout);
-				panelOperaciones.setPreferredSize(new java.awt.Dimension(749, 218));
+				panelOperaciones.setPreferredSize(new java.awt.Dimension(749, 54));
 				{
-					panelIngreso = new JPanel();
-					BorderLayout panelIngresoLayout = new BorderLayout();
-					panelIngreso.setLayout(panelIngresoLayout);
-					panelOperaciones.add(panelIngreso, BorderLayout.EAST);
-					panelIngreso.setPreferredSize(new java.awt.Dimension(161, 305));
+					panelTextos = new JPanel();
+					panelOperaciones.add(panelTextos, BorderLayout.EAST);
+					panelTextos.setPreferredSize(new java.awt.Dimension(226, 65));
+					panelTextos.setBorder(BorderFactory.createTitledBorder("Ingresar patente"));
 					{
-						panelTextos = new JPanel();
-						panelIngreso.add(panelTextos, BorderLayout.CENTER);
-						panelTextos.setPreferredSize(new java.awt.Dimension(578, 305));
-						{
-							textLetras = new JTextField();
-							panelTextos.add(textLetras);
-							textLetras.setPreferredSize(new java.awt.Dimension(
-									77, 22));
-							textLetras.addKeyListener(new KeyAdapter() {
-								public void keyTyped(KeyEvent evt) {
-									textLetrasKeyTyped(evt);
-								}
-							});
-						}
-						{
-							BotonIngresar = new JButton();
-							panelTextos.add(BotonIngresar);
-							BotonIngresar
-									.addActionListener(new ActionListener() {
-										public void actionPerformed(
-												ActionEvent arg0) {
-											ingresarPatente();
-										}
-									});
-							BotonIngresar.setText("Ingresar Patente");
-						}
+						textLetras = new JTextField();
+						panelTextos.add(textLetras);
+						textLetras.setPreferredSize(new java.awt.Dimension(84, 22));
+						textLetras.addKeyListener(new KeyAdapter() {
+							public void keyTyped(KeyEvent evt) {
+								textLetrasKeyTyped(evt);
+							}
+						});
+					}
+					{
+						BotonIngresar = new JButton();
+						panelTextos.add(BotonIngresar);
+						BotonIngresar
+						.addActionListener(new ActionListener() {
+							public void actionPerformed(
+									ActionEvent arg0) {
+								ingresarPatente();
+							}
+						});
+						BotonIngresar.setText("Ingresar");
 					}
 				}
 				{
 					panelFechaHora = new JPanel();
 					FlowLayout panelFechaHoraLayout = new FlowLayout();
 					panelOperaciones.add(panelFechaHora, BorderLayout.WEST);
-					panelFechaHora.setPreferredSize(new java.awt.Dimension(126, 305));
+					panelFechaHora.setPreferredSize(new java.awt.Dimension(314, 65));
 					panelFechaHora.setLayout(panelFechaHoraLayout);
-					panelFechaHora.setBorder(new LineBorder(new java.awt.Color(
-							0, 0, 0), 1, false));
+					panelFechaHora.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 					{
 						panelHora = new JPanel();
 						panelFechaHora.add(panelHora);
-						panelHora.setPreferredSize(new java.awt.Dimension(104, 39));
+						panelHora.setPreferredSize(new java.awt.Dimension(142, 39));
+						{
+							labelH = new JLabel();
+							panelHora.add(labelH);
+							labelH.setText("Hora:");
+							labelH.setFont(new java.awt.Font("Andale Mono",1,12));
+						}
 						{
 							labelHora = new JLabel();
 							panelHora.add(labelHora);
 							labelHora.setPreferredSize(new java.awt.Dimension(
 									78, 30));
-							labelHora.setBorder(BorderFactory
-									.createMatteBorder(1, 1, 1, 1,
-											new java.awt.Color(0, 0, 0)));
 						}
 					}
 					{
 						panelFecha = new JPanel();
-						FlowLayout panelFechaLayout = new FlowLayout();
 						panelFechaHora.add(panelFecha);
-						panelFecha.setPreferredSize(new java.awt.Dimension(113, 37));
+						FlowLayout panelFechaLayout = new FlowLayout();
+						panelFecha.setPreferredSize(new java.awt.Dimension(137, 39));
 						panelFecha.setLayout(panelFechaLayout);
+						{
+							labelF = new JLabel();
+							panelFecha.add(labelF);
+							labelF.setText("Fecha:");
+							labelF.setFont(new java.awt.Font("Andale Mono",1,12));
+						}
 						{
 							labelDia = new JLabel();
 							panelFecha.add(labelDia);
-							labelDia.setPreferredSize(new java.awt.Dimension(
-									98, 29));
-							labelDia.setBorder(BorderFactory.createMatteBorder(
-									1, 1, 1, 1, new java.awt.Color(0, 0, 0)));
+							labelDia.setPreferredSize(new java.awt.Dimension(76, 29));
 						}
 					}
 				}
 				{
 					panelParquimetro = new JPanel();
+					panelOperaciones.add(panelParquimetro, BorderLayout.CENTER);
 					FlowLayout panelParquimetroLayout = new FlowLayout();
 					panelParquimetro.setLayout(panelParquimetroLayout);
-					panelOperaciones.add(panelParquimetro, BorderLayout.CENTER);
-					panelParquimetro.setPreferredSize(new java.awt.Dimension(462, 233));
-					{
-						labelParquimetro = new JLabel();
-						panelParquimetro.add(labelParquimetro);
-						labelParquimetro.setText("conección a parquimetro");
-						labelParquimetro.setPreferredSize(new java.awt.Dimension(170, 21));
-						labelParquimetro.setBorder(new LineBorder(new java.awt.Color(0,0,0), 1, false));
-					}
+					panelParquimetro.setPreferredSize(new java.awt.Dimension(226, 107));
+					panelParquimetro.setBorder(BorderFactory.createTitledBorder("Conexión a parquimetro"));
 					{
 						boxParquimetro = new JComboBox();
 						panelParquimetro.add(boxParquimetro);
@@ -212,14 +204,14 @@ public class InspectorScreen extends JFrame {
 								botonConectarParquimetro(arg0);
 							}
 						});
-						botonConectar.setText("Conectar con parquimetro");
+						botonConectar.setText("Conectar");
 					}
 				}
 			}
 		}
 
 		pack();
-		this.setSize(759, 424);
+		this.setSize(763, 428);
 	}
 
 	public void ingresarPatente() {
@@ -242,12 +234,10 @@ public class InspectorScreen extends JFrame {
 
 	// verifica los estacionados y labra las multas
 	public void botonConectarParquimetro(ActionEvent evt) {
-		if (!listaPatentes.isEmpty()) {
 			String parquimetro = (String) boxParquimetro.getSelectedItem();
 			registrarAcceso(parquimetro);
 			determinarNoRegistrados(parquimetro);
 			listaPatentes.clear();
-		}
 	}
 
 	private void registrarAcceso(String parquimetro) {
@@ -261,7 +251,7 @@ public class InspectorScreen extends JFrame {
 				+ ", '"
 				+ fecha
 				+ "', '"
-				+ hora + ":00');";
+				+ hora + "');";
 		me.execInsert(sql);
 
 		// FIXME asociado_con: hay q controlarlo? puede ingresar si no esta
@@ -307,7 +297,7 @@ public class InspectorScreen extends JFrame {
 				+ fecha
 				+ "', '"
 				+ hora
-				+ ":00', '"
+				+ "', '"
 				+ patente
 				+ "', "
 				+ me.getIDAsociadoCon() + ");";
@@ -349,7 +339,7 @@ public class InspectorScreen extends JFrame {
 	}
 
 	private void llenarParquimetros() {
-		Result res = me.execQuery("SELECT id_parq FROM parquimetros;");
+		Result res = me.execQuery("SELECT id_parq FROM parquimetros ORDER BY id_parq");
 		DefaultComboBoxModel cbm = new DefaultComboBoxModel();
 
 		for (String[] row : res) {

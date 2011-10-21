@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
@@ -22,6 +23,19 @@ import javax.swing.table.JTableHeader;
 import logic.Result;
 import logic.User;
 
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 public class AdminScreen extends JFrame implements ActionListener,
 		ListSelectionListener {
 
@@ -45,14 +59,23 @@ public class AdminScreen extends JFrame implements ActionListener,
 		queryPane = new JPanel(new BorderLayout());
 		queryPane.add(queryText, BorderLayout.CENTER);
 		queryPane.add(runQuery, BorderLayout.EAST);
+		
+		{
+			result = new JTable(resultTableModel);
 
-		resultTableModel = new DefaultTableModel();
-		result = new JTable(resultTableModel);
-		resultHeader = result.getTableHeader();
+			resultTableModel = new DefaultTableModel();
+			resultHeader = result.getTableHeader();
+		}
 
 		resultPane = new JPanel(new BorderLayout());
 		resultPane.add(result.getTableHeader(), BorderLayout.NORTH);
-		resultPane.add(result, BorderLayout.CENTER);
+		{
+			scrollTabla = new JScrollPane();
+			scrollTabla.setViewportView(result);
+			resultPane.add(scrollTabla, BorderLayout.NORTH);
+		}
+		
+
 
 		tablesPane = new JPanel(new BorderLayout());
 
@@ -146,6 +169,7 @@ public class AdminScreen extends JFrame implements ActionListener,
 	JPanel resultPane;
 	JTableHeader resultHeader;
 	JTable result;
+	private JScrollPane scrollTabla;
 
 	// Panel de tablas de atributos
 	JPanel tablesPane;

@@ -22,7 +22,7 @@ public class ThreadHorayFecha extends Thread {
 	    	  fecha.setText(getFechaActual());
 	    	  fecha.repaint();
 	    	  try {
-				sleep(30000);
+				sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -41,7 +41,7 @@ public class ThreadHorayFecha extends Thread {
       //@return Retorna un <STRING> con la hora actual formato "hh:mm"
       public static String getHoraActual() {
           Date ahora = new Date();
-          SimpleDateFormat formateador = new SimpleDateFormat("HH:mm");
+          SimpleDateFormat formateador = new SimpleDateFormat("HH:mm:ss");
           return formateador.format(ahora);
       }
 }
