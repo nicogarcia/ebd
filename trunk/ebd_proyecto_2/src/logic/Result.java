@@ -88,9 +88,7 @@ public class Result implements Iterable<String[]> {
 	public boolean isEmpty() {
 		try {
 			return !rs.next();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) {}
 		return false;
 	}
 	
