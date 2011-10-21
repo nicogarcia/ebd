@@ -20,7 +20,6 @@ public class User {
 		try {
 			con = DriverManager.getConnection(uri, usuario, clave);
 		} catch (SQLException ex) {
-			// FIXME Asegurar que sea error de user-pass
 			logged = false;
 		}
 	}
@@ -37,26 +36,30 @@ public class User {
 		}
 	}
 
-	public Result execQuery(String query) {
+	public Result execute(String sql) {
 		ResultSet rs = null;
-		try {
-			rs = con.createStatement().executeQuery(query);
-		} catch (SQLException ex) {
-			Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return new Result(rs);
-	}
+		Result res = null;
 
-	public boolean execInsert(String sql) {
+		boolean failed = false;
+		boolean modifies = false;
+
 		Statement stmt;
+
+		String errorDetail = "";
+
 		try {
 			stmt = con.createStatement();
-			stmt.execute(sql);
-			stmt.close();
+			modifies = !stmt.execute(sql);
+			rs = stmt.getResultSet();
 		} catch (SQLException e) {
-			return false;
+			failed = true;
+			errorDetail = e.getMessage();
 		}
-		return true;
+		
+		res = new Result(rs, modifies, failed);
+		res.setErrorDetail(errorDetail);
+		
+		return res;
 	}
 
 	public boolean isLogged() {

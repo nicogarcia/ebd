@@ -10,19 +10,28 @@ public class Result implements Iterable<String[]> {
 	private String row[];
 	private boolean hasFailed = false;
 	private ResultSet rs;
+	private boolean isUpdateCommand;
+	private String errorDetail = "";
 
-	// FIXME Try to remove the most tries
-
-	public Result(ResultSet resultSet) {
+	public Result(ResultSet resultSet, boolean modifies, boolean failed) {
 		this.rs = resultSet;
+		isUpdateCommand = modifies;
+		hasFailed = failed;
 		try {
-			if (!isLast())
+			if (!isUpdateCommand() && !hasFailed()) {
 				col_count = rs.getMetaData().getColumnCount();
-			row = new String[col_count];
+				row = new String[col_count];
+			}
 		} catch (SQLException e) {
-			hasFailed = true;
-			System.out.println(e.getMessage());
 		}
+	}
+	
+	public void setErrorDetail(String errorDetail) {
+		this.errorDetail = errorDetail;
+	}
+
+	public String getErrorDetail() {
+		return errorDetail;
 	}
 
 	public String[] getCurrentRow() {
@@ -53,9 +62,14 @@ public class Result implements Iterable<String[]> {
 
 	public void closeQuery() {
 		try {
-			rs.close();
+			if (rs != null)
+				rs.close();
 		} catch (SQLException e) {
 		}
+	}
+
+	public boolean isUpdateCommand() {
+		return isUpdateCommand;
 	}
 
 	public int getColumnCount() {
@@ -70,7 +84,6 @@ public class Result implements Iterable<String[]> {
 		return new ResultIterator(this);
 	}
 
-
 	public boolean isLast() {
 		boolean ret = false;
 		try {
@@ -80,18 +93,19 @@ public class Result implements Iterable<String[]> {
 		}
 		return ret;
 	}
-	
-	public void setFailed() {
-		hasFailed = true;
+
+	public void setFailed(boolean failed) {
+		hasFailed = failed;
 	}
 
 	public boolean isEmpty() {
 		try {
 			return !rs.next();
-		} catch (SQLException e) {}
+		} catch (SQLException e) {
+		}
 		return false;
 	}
-	
+
 	private class ResultIterator implements Iterator<String[]> {
 
 		Result result;

@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
@@ -107,16 +109,20 @@ public class InspectorScreen extends JFrame {
 				panelPrincipal.add(panelOperaciones, BorderLayout.NORTH);
 				BorderLayout panelOperacionesLayout = new BorderLayout();
 				panelOperaciones.setLayout(panelOperacionesLayout);
-				panelOperaciones.setPreferredSize(new java.awt.Dimension(749, 54));
+				panelOperaciones.setPreferredSize(new java.awt.Dimension(749,
+						54));
 				{
 					panelTextos = new JPanel();
 					panelOperaciones.add(panelTextos, BorderLayout.EAST);
-					panelTextos.setPreferredSize(new java.awt.Dimension(226, 65));
-					panelTextos.setBorder(BorderFactory.createTitledBorder("Ingresar patente"));
+					panelTextos
+							.setPreferredSize(new java.awt.Dimension(226, 65));
+					panelTextos.setBorder(BorderFactory
+							.createTitledBorder("Ingresar patente"));
 					{
 						textLetras = new JTextField();
 						panelTextos.add(textLetras);
-						textLetras.setPreferredSize(new java.awt.Dimension(84, 22));
+						textLetras.setPreferredSize(new java.awt.Dimension(84,
+								22));
 						textLetras.addKeyListener(new KeyAdapter() {
 							public void keyTyped(KeyEvent evt) {
 								textLetrasKeyTyped(evt);
@@ -126,10 +132,8 @@ public class InspectorScreen extends JFrame {
 					{
 						BotonIngresar = new JButton();
 						panelTextos.add(BotonIngresar);
-						BotonIngresar
-						.addActionListener(new ActionListener() {
-							public void actionPerformed(
-									ActionEvent arg0) {
+						BotonIngresar.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
 								ingresarPatente();
 							}
 						});
@@ -140,18 +144,22 @@ public class InspectorScreen extends JFrame {
 					panelFechaHora = new JPanel();
 					FlowLayout panelFechaHoraLayout = new FlowLayout();
 					panelOperaciones.add(panelFechaHora, BorderLayout.WEST);
-					panelFechaHora.setPreferredSize(new java.awt.Dimension(314, 65));
+					panelFechaHora.setPreferredSize(new java.awt.Dimension(314,
+							65));
 					panelFechaHora.setLayout(panelFechaHoraLayout);
-					panelFechaHora.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+					panelFechaHora.setBorder(BorderFactory
+							.createBevelBorder(BevelBorder.LOWERED));
 					{
 						panelHora = new JPanel();
 						panelFechaHora.add(panelHora);
-						panelHora.setPreferredSize(new java.awt.Dimension(142, 39));
+						panelHora.setPreferredSize(new java.awt.Dimension(142,
+								39));
 						{
 							labelH = new JLabel();
 							panelHora.add(labelH);
 							labelH.setText("Hora:");
-							labelH.setFont(new java.awt.Font("Andale Mono",1,12));
+							labelH.setFont(new java.awt.Font("Andale Mono", 1,
+									12));
 						}
 						{
 							labelHora = new JLabel();
@@ -164,18 +172,21 @@ public class InspectorScreen extends JFrame {
 						panelFecha = new JPanel();
 						panelFechaHora.add(panelFecha);
 						FlowLayout panelFechaLayout = new FlowLayout();
-						panelFecha.setPreferredSize(new java.awt.Dimension(137, 39));
+						panelFecha.setPreferredSize(new java.awt.Dimension(137,
+								39));
 						panelFecha.setLayout(panelFechaLayout);
 						{
 							labelF = new JLabel();
 							panelFecha.add(labelF);
 							labelF.setText("Fecha:");
-							labelF.setFont(new java.awt.Font("Andale Mono",1,12));
+							labelF.setFont(new java.awt.Font("Andale Mono", 1,
+									12));
 						}
 						{
 							labelDia = new JLabel();
 							panelFecha.add(labelDia);
-							labelDia.setPreferredSize(new java.awt.Dimension(76, 29));
+							labelDia.setPreferredSize(new java.awt.Dimension(
+									76, 29));
 						}
 					}
 				}
@@ -184,26 +195,28 @@ public class InspectorScreen extends JFrame {
 					panelOperaciones.add(panelParquimetro, BorderLayout.CENTER);
 					FlowLayout panelParquimetroLayout = new FlowLayout();
 					panelParquimetro.setLayout(panelParquimetroLayout);
-					panelParquimetro.setPreferredSize(new java.awt.Dimension(226, 107));
-					panelParquimetro.setBorder(BorderFactory.createTitledBorder("Conexión a parquimetro"));
+					panelParquimetro.setPreferredSize(new java.awt.Dimension(
+							226, 107));
+					panelParquimetro.setBorder(BorderFactory
+							.createTitledBorder("Conexión a parquimetro"));
 					{
 						boxParquimetro = new JComboBox();
 						panelParquimetro.add(boxParquimetro);
 						llenarParquimetros();
-						boxParquimetro.setPreferredSize(new java.awt.Dimension(62, 22));
+						boxParquimetro.setPreferredSize(new java.awt.Dimension(
+								62, 22));
 					}
 					{
 						botonConectar = new JButton();
 						panelParquimetro.add(botonConectar);
-						botonConectar
-						.addActionListener(new ActionListener() {
-							public void actionPerformed(
-									ActionEvent arg0) {
+						botonConectar.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
 								botonConectarParquimetro(arg0);
 							}
 						});
 						botonConectar.setText("Conectar");
-						botonConectar.setPreferredSize(new java.awt.Dimension(109, 22));
+						botonConectar.setPreferredSize(new java.awt.Dimension(
+								109, 22));
 					}
 				}
 			}
@@ -221,8 +234,8 @@ public class InspectorScreen extends JFrame {
 		// verifico que haya ingresado bien las letras de la patente
 		if (p.matcher(patente).matches()) {
 			listaPatentes.put(patente, NOESTA);
-			mensajeTexto.setText(mensajeTexto.getText()
-					+ "Ingreso la patente " + patente + " correctamente.\n\n");
+			mensajeTexto.setText(mensajeTexto.getText() + "Ingreso la patente "
+					+ patente + " correctamente.\n\n");
 		} else {
 			mensajeTexto.setText(mensajeTexto.getText()
 					+ "Ingreso una patente invalida. Intente nuevamente.\n\n");
@@ -233,10 +246,16 @@ public class InspectorScreen extends JFrame {
 
 	// verifica los estacionados y labra las multas
 	public void botonConectarParquimetro(ActionEvent evt) {
-			String parquimetro = (String) boxParquimetro.getSelectedItem();
+		String parquimetro = (String) boxParquimetro.getSelectedItem();
+		if (parquimetro != null && !parquimetro.equals("")) {
 			registrarAcceso(parquimetro);
 			determinarNoRegistrados(parquimetro);
 			listaPatentes.clear();
+		}else {
+			mensajeTexto.setText(mensajeTexto.getText()
+					+ "No puede acceder al parquimetro."
+					+ "\n\n");
+		}
 	}
 
 	private void registrarAcceso(String parquimetro) {
@@ -251,13 +270,10 @@ public class InspectorScreen extends JFrame {
 				+ fecha
 				+ "', '"
 				+ hora + "');";
-		me.execInsert(sql);
+		me.execute(sql);
 
-		// FIXME asociado_con: hay q controlarlo? puede ingresar si no esta
-		// asociado?
-		// obtengo lo que inserté recién
 		Result res = me
-				.execQuery("SELECT id_asociado_con FROM asociado_con WHERE legajo = '"
+				.execute("SELECT id_asociado_con FROM asociado_con WHERE legajo = '"
 						+ me.getUsuario() + "'");
 
 		me.setIDAsociadoCon(Integer.parseInt(res.getCurrentRow()[0]));
@@ -281,8 +297,10 @@ public class InspectorScreen extends JFrame {
 		for (Entry<String, Integer> entry : listaPatentes.entrySet()) {
 			if (entry.getValue() == NOESTA) {
 				Result res = me
-						.execQuery("SELECT patente FROM estacionados NATURAL JOIN parquimetros WHERE id_parq =  '"
-								+ parquimetro + "' AND patente ='"+entry.getKey()+"';");
+						.execute("SELECT patente FROM estacionados NATURAL JOIN parquimetros WHERE id_parq =  '"
+								+ parquimetro
+								+ "' AND patente ='"
+								+ entry.getKey() + "';");
 				if (res.isEmpty())
 					generarMulta(entry.getKey(), parquimetro, fecha, hora);
 				res.closeQuery();
@@ -301,15 +319,16 @@ public class InspectorScreen extends JFrame {
 				+ "', "
 				+ me.getIDAsociadoCon() + ");";
 
-		boolean insertCorrect = me.execInsert(sql);
-		Result ultimaMulta = me.execQuery("SELECT max(numero) FROM multa");
+		Result insertarMulta = me.execute(sql);
+		Result ultimaMulta = me.execute("SELECT max(numero) FROM multa");
 		Result direccionMulta = me
-				.execQuery("SELECT calle, altura FROM parquimetros WHERE id_parq = '"
+				.execute("SELECT calle, altura FROM parquimetros WHERE id_parq = '"
 						+ parquimetro + "'");
 
-		if (!insertCorrect) {
+		if (insertarMulta.hasFailed()) {
 			mensajeTexto.setText(mensajeTexto.getText()
-					+ "Error al labrar la multa de la patente " + patente + "\n\n");
+					+ "Error al labrar la multa de la patente " + patente
+					+ "\n\n");
 		} else {
 			mensajeTexto.setText(mensajeTexto.getText() + "Multa numero "
 					+ ultimaMulta.getCurrentRow()[0]
@@ -338,18 +357,51 @@ public class InspectorScreen extends JFrame {
 	}
 
 	private void llenarParquimetros() {
-		Result res = me.execQuery("SELECT id_parq FROM parquimetros ORDER BY id_parq");
+		String query = "SELECT id_parq FROM parquimetros natural join asociado_con WHERE turno='"
+				+ turno()
+				+ "' and dia ='"
+				+ diaSemana()
+				+ "' and legajo='"
+				+ me.getUsuario() + "' ORDER BY id_parq";
+		Result res = me.execute(query);
+
 		DefaultComboBoxModel cbm = new DefaultComboBoxModel();
 
-		for (String[] row : res) {
-			cbm.addElement(row[0]);
+		if (!res.isEmpty()) {
+
+			res.closeQuery();
+
+			res = me.execute(query);
+
+			for (String[] row : res) {
+				cbm.addElement(row[0]);
+			}
+
+			boxParquimetro.setModel(cbm);
 		}
-
-		boxParquimetro.setModel(cbm);
-
 		res.closeQuery();
 	}
 
-	// FIXME Agregar cerrar sesion
+	private String diaSemana() {
+		Hashtable<Integer, String> dias = new Hashtable<Integer, String>(7);
+		dias.put(Calendar.SUNDAY, "DO");
+		dias.put(Calendar.MONDAY, "LU");
+		dias.put(Calendar.TUESDAY, "MA");
+		dias.put(Calendar.WEDNESDAY, "MI");
+		dias.put(Calendar.THURSDAY, "JU");
+		dias.put(Calendar.FRIDAY, "VI");
+		dias.put(Calendar.SATURDAY, "SA");
+
+		Calendar c = new GregorianCalendar();
+		return dias.get(c.get(Calendar.DAY_OF_WEEK));
+
+	}
+
+	private String turno() {
+		Calendar c = new GregorianCalendar();
+		if (c.get(Calendar.HOUR_OF_DAY) >= 12)
+			return "T";
+		return "M";
+	}
 
 }

@@ -10,7 +10,7 @@ public class InspectorUser extends User {
 		
 		inspector = true;
 		
-		Result res = execQuery("SELECT PASSWORD FROM inspectores WHERE legajo = '"
+		Result res = execute("SELECT PASSWORD FROM inspectores WHERE legajo = '"
 				+ usuario + "'");
 		String pass = null;
 
