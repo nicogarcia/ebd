@@ -282,7 +282,7 @@ public class InspectorScreen extends JFrame {
 			if (entry.getValue() == NOESTA) {
 				Result res = me
 						.execQuery("SELECT patente FROM estacionados NATURAL JOIN parquimetros WHERE id_parq =  '"
-								+ parquimetro + "';");
+								+ parquimetro + "' AND patente ='"+entry.getKey()+"';");
 				if (res.isEmpty())
 					generarMulta(entry.getKey(), parquimetro, fecha, hora);
 				res.closeQuery();

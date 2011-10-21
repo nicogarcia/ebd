@@ -60,11 +60,8 @@ public class AdminScreen extends JFrame implements ActionListener,
 		resultPane = new JPanel(new BorderLayout());
 
 		resultTableModel = new DefaultTableModel();
-		result = new JTable(resultTableModel);
-		resultPane.add(result, BorderLayout.CENTER);
 
-		resultHeader = result.getTableHeader();
-		resultPane.add(result.getTableHeader(), BorderLayout.NORTH);
+		
 
 		tablesPane = new JPanel(new BorderLayout());
 
@@ -91,6 +88,17 @@ public class AdminScreen extends JFrame implements ActionListener,
 
 		add(queryPane, BorderLayout.NORTH);
 		add(resultPane, BorderLayout.CENTER);
+		{
+			panelScroll = new JScrollPane();
+			resultPane.add(panelScroll, BorderLayout.CENTER);
+			{
+				result = new JTable(resultTableModel);
+				panelScroll.setViewportView(result);
+			}
+		}
+		resultHeader = result.getTableHeader();
+		resultPane.add(result.getTableHeader(), BorderLayout.NORTH);
+		
 		add(tablesPane, BorderLayout.SOUTH);
 
 		setTitle("Sistema de Parquimetros - Usuario: admin");
@@ -158,6 +166,7 @@ public class AdminScreen extends JFrame implements ActionListener,
 	JPanel resultPane;
 	JTableHeader resultHeader;
 	JTable result;
+	private JScrollPane panelScroll;
 
 	// Panel de tablas de atributos
 	JPanel tablesPane;
