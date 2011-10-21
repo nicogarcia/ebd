@@ -96,6 +96,7 @@ public class LoginScreen extends javax.swing.JFrame {
 					botonInspector.setSize(100, 22);
 					botonInspector.setPreferredSize(new java.awt.Dimension(200,
 							280));
+					botonInspector.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/inspector.png")));
 					botonInspector.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent evt) {
 							buttonClicked(evt, botonInspector);
@@ -209,6 +210,9 @@ public class LoginScreen extends javax.swing.JFrame {
 	private void hideLegajo(boolean b) {
 		textLegajo.setVisible(b);
 		labelLegajo.setVisible(b);
+		textLegajo.setText("12");
+		if(!b)
+			textPassword.setText("fieresu");
 		textLegajo.requestFocusInWindow();
 		textLegajo.selectAll();
 	}

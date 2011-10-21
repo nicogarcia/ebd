@@ -1,6 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +14,9 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
+import javax.swing.DebugGraphics;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -48,32 +55,24 @@ public class SellerScreen extends JFrame {
 	private final int width = 500;
 	private final int height = 300;
 	private JPanel panel;
+	private JLabel imageLabel;
+	private JLabel jLabel2;
+	private JPanel jPanel1;
 	private JTextArea mensajeArea;
 	private JScrollPane scrollPanel;
 	private JTextArea textSaldo;
 	private JLabel jLabel1;
-	private JPanel panelTextSaldo;
-	private JPanel labelSaldo;
 	private JPanel panelMensajes;
-	private JPanel panelSaldosaldo;
 	private JComboBox boxTipoCospel;
-	private JPanel panelPatente;
-	private JPanel panelLabelCospel;
 	private JButton botonCargar;
-	private JPanel panelBoton;
 	private JLabel labelCospel;
-	private JPanel panelBoxCospel;
 	private JComboBox boxPatente;
 	private JLabel labelPatente;
-	private JPanel panelBoxPatente;
-	private JPanel panelLabelPatente;
-	private JPanel panelSaldo;
-	private JPanel panelCospel;
 
 	private void initGui() {
 
 		setTitle("Sistema de Parquimetros - Usuario: Vendedor");
-		this.setPreferredSize(new java.awt.Dimension(496, 293));
+		this.setPreferredSize(new java.awt.Dimension(522, 360));
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		{
@@ -82,146 +81,19 @@ public class SellerScreen extends JFrame {
 			panel.setLayout(panelLayout);
 			getContentPane().add(panel, BorderLayout.CENTER);
 			{
-				panelSaldo = new JPanel();
-				BorderLayout panelSaldoLayout = new BorderLayout();
-				panelSaldo.setLayout(panelSaldoLayout);
-				panel.add(panelSaldo, BorderLayout.SOUTH);
-				panelSaldo.setPreferredSize(new java.awt.Dimension(490, 179));
-				{
-					panelSaldosaldo = new JPanel();
-					BorderLayout panelSaldosaldoLayout = new BorderLayout();
-					panelSaldosaldo.setLayout(panelSaldosaldoLayout);
-					panelSaldo.add(panelSaldosaldo, BorderLayout.NORTH);
-					panelSaldosaldo.setPreferredSize(new java.awt.Dimension(
-							490, 38));
-					panelSaldosaldo.setBorder(BorderFactory
-							.createBevelBorder(BevelBorder.LOWERED));
-					{
-						labelSaldo = new JPanel();
-						BorderLayout labelSaldoLayout = new BorderLayout();
-						labelSaldo.setLayout(labelSaldoLayout);
-						panelSaldosaldo.add(labelSaldo, BorderLayout.WEST);
-						labelSaldo.setPreferredSize(new java.awt.Dimension(240,
-								48));
-						{
-							jLabel1 = new JLabel();
-							labelSaldo.add(jLabel1, BorderLayout.EAST);
-							jLabel1.setText("Saldo");
-							jLabel1.setPreferredSize(new java.awt.Dimension(
-									194, 38));
-						}
-					}
-					{
-						panelTextSaldo = new JPanel();
-						panelSaldosaldo.add(panelTextSaldo, BorderLayout.EAST);
-						panelTextSaldo.setPreferredSize(new java.awt.Dimension(
-								240, 48));
-						{
-							textSaldo = new JTextArea();
-							panelTextSaldo.add(textSaldo);
-							textSaldo.setPreferredSize(new java.awt.Dimension(
-									87, 19));
-							textSaldo.setBorder(new LineBorder(
-									new java.awt.Color(0, 0, 0), 1, false));
-						}
-					}
-				}
-				{
-					panelMensajes = new JPanel();
-					BorderLayout panelMensajesLayout = new BorderLayout();
-					panelMensajes.setLayout(panelMensajesLayout);
-					panelSaldo.add(panelMensajes, BorderLayout.SOUTH);
-					panelSaldo.add(getPanelBoton(), BorderLayout.CENTER);
-					panelMensajes.setPreferredSize(new java.awt.Dimension(486,
-							113));
-					panelMensajes.add(getScrollPanel(), BorderLayout.CENTER);
-				}
-			}
-			{
-				panelPatente = new JPanel();
-				panel.add(panelPatente, BorderLayout.NORTH);
-				BorderLayout panelPatenteLayout = new BorderLayout();
-				panelPatente.setLayout(panelPatenteLayout);
-				panelPatente.setPreferredSize(new java.awt.Dimension(490, 42));
-				panelPatente.setBorder(BorderFactory
-						.createBevelBorder(BevelBorder.LOWERED));
-				{
-					panelLabelPatente = new JPanel();
-					BorderLayout panelLabelPatenteLayout = new BorderLayout();
-					panelLabelPatente.setLayout(panelLabelPatenteLayout);
-					panelPatente.add(panelLabelPatente, BorderLayout.WEST);
-					panelLabelPatente.setPreferredSize(new java.awt.Dimension(
-							234, 42));
-					{
-						labelPatente = new JLabel();
-						panelLabelPatente.add(labelPatente, BorderLayout.EAST);
-						labelPatente.setText("Patente del cospel");
-						labelPatente.setPreferredSize(new java.awt.Dimension(
-								184, 42));
-					}
-				}
-				{
-					panelBoxPatente = new JPanel();
-					panelPatente.add(panelBoxPatente, BorderLayout.EAST);
-					panelBoxPatente.setPreferredSize(new java.awt.Dimension(
-							229, 42));
-					{
-						boxPatente = new JComboBox();
-						panelBoxPatente.add(boxPatente);
-						iniciarPatentes();
-						boxPatente.setPreferredSize(new java.awt.Dimension(103,
-								25));
-					}
-				}
-			}
-			{
-				panelCospel = new JPanel();
-				BorderLayout panelCospelLayout = new BorderLayout();
-				panelCospel.setLayout(panelCospelLayout);
-				panel.add(panelCospel, BorderLayout.CENTER);
-				panelCospel.setPreferredSize(new java.awt.Dimension(490, 48));
-				{
-					panelLabelCospel = new JPanel();
-					BorderLayout panelLabelCospelLayout = new BorderLayout();
-					panelLabelCospel.setLayout(panelLabelCospelLayout);
-					panelCospel.add(panelLabelCospel, BorderLayout.WEST);
-					panelLabelCospel.setPreferredSize(new java.awt.Dimension(
-							232, 54));
-					{
-						labelCospel = new JLabel();
-						panelLabelCospel.add(labelCospel, BorderLayout.EAST);
-						labelCospel.setText("Tipo de cospel");
-						labelCospel.setPreferredSize(new java.awt.Dimension(
-								185, 42));
-					}
-				}
-
-				{
-					panelBoxCospel = new JPanel();
-					panelCospel.add(panelBoxCospel, BorderLayout.EAST);
-					panelBoxCospel.setPreferredSize(new java.awt.Dimension(229,
-							54));
-					{
-						boxTipoCospel = new JComboBox();
-						panelBoxCospel.add(boxTipoCospel);
-						iniciarCospelTipo();
-						boxTipoCospel.setPreferredSize(new java.awt.Dimension(
-								104, 26));
-					}
-				}
+				panelMensajes = new JPanel();
+				panel.add(panelMensajes, BorderLayout.CENTER);
+				panel.add(getJPanel1(), BorderLayout.NORTH);
+				BorderLayout panelMensajesLayout = new BorderLayout();
+				panelMensajes.setLayout(panelMensajesLayout);
+				panelMensajes.setPreferredSize(new java.awt.Dimension(486,
+						113));
+				panelMensajes.add(getScrollPanel(), BorderLayout.CENTER);
 			}
 		}
 
 		pack();
-		this.setSize(496, 293);
-	}
-
-	private JPanel getPanelBoton() {
-		if (panelBoton == null) {
-			panelBoton = new JPanel();
-			panelBoton.add(getBotonCargar());
-		}
-		return panelBoton;
+		this.setSize(522, 360);
 	}
 
 	private JButton getBotonCargar() {
@@ -234,6 +106,13 @@ public class SellerScreen extends JFrame {
 					botonCargarAction(evt);
 				}
 			});
+		}
+		{
+			boxTipoCospel = new JComboBox();
+			jPanel1.add(boxTipoCospel, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+			jPanel1.add(getJLabel2(), new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			iniciarCospelTipo();
+			boxTipoCospel.setPreferredSize(new java.awt.Dimension(512, 155));
 		}
 		return botonCargar;
 	}
@@ -307,6 +186,7 @@ public class SellerScreen extends JFrame {
 	private JScrollPane getScrollPanel() {
 		if (scrollPanel == null) {
 			scrollPanel = new JScrollPane();
+			scrollPanel.setPreferredSize(new java.awt.Dimension(512, 223));
 			scrollPanel.setViewportView(getMensajeArea());
 		}
 		return scrollPanel;
@@ -318,6 +198,65 @@ public class SellerScreen extends JFrame {
 			mensajeArea.setEditable(false);
 		}
 		return mensajeArea;
+	}
+	
+	private JPanel getJPanel1() {
+		if(jPanel1 == null) {
+			jPanel1 = new JPanel();
+			GridBagLayout jPanel1Layout = new GridBagLayout();
+			jPanel1Layout.rowWeights = new double[] {0.1, 0.1, 0.1};
+			jPanel1Layout.rowHeights = new int[] {7, 7, 7};
+			jPanel1Layout.columnWeights = new double[] {0.1, 0.1, 0.1, 0.1};
+			jPanel1Layout.columnWidths = new int[] {7, 7, 7, 7};
+			jPanel1.setLayout(jPanel1Layout);
+			jPanel1.setPreferredSize(new java.awt.Dimension(512, 175));
+			{
+				jLabel1 = new JLabel();
+				jPanel1.add(jLabel1, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				jLabel1.setText("Saldo");
+				jLabel1.setPreferredSize(new java.awt.Dimension(124, 40));
+			}
+			{
+				textSaldo = new JTextArea();
+				jPanel1.add(textSaldo, new GridBagConstraints(2, 2, 1, 2, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+				textSaldo.setPreferredSize(new java.awt.Dimension(42, 17));
+				textSaldo.setBorder(new LineBorder(
+						new java.awt.Color(0, 0, 0), 1, false));
+			}
+			{
+				labelPatente = new JLabel();
+				jPanel1.add(labelPatente, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				labelPatente.setText("Patente del cospel");
+				labelPatente.setPreferredSize(new java.awt.Dimension(253, 40));
+			}
+			{
+				boxPatente = new JComboBox();
+				jPanel1.add(boxPatente, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+				jPanel1.add(getBotonCargar(), new GridBagConstraints(3, 0, 1, 3, 0.0, 0.0, GridBagConstraints.LAST_LINE_END, GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
+				jPanel1.add(getImageLabel(), new GridBagConstraints(0, 0, 1, 3, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+				iniciarPatentes();
+				boxPatente.setPreferredSize(new java.awt.Dimension(103, 25));
+			}
+		}
+		return jPanel1;
+	}
+	
+	private JLabel getJLabel2() {
+		if(jLabel2 == null) {
+			jLabel2 = new JLabel();
+			jLabel2.setText("Tipo Cospel");
+			jLabel2.setPreferredSize(new java.awt.Dimension(253, 40));
+		}
+		return jLabel2;
+	}
+	
+	private JLabel getImageLabel() {
+		if(imageLabel == null) {
+			imageLabel = new JLabel();
+			imageLabel.setDebugGraphicsOptions(DebugGraphics.BUFFERED_OPTION);
+			imageLabel.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/cospel-altec.png")));
+		}
+		return imageLabel;
 	}
 
 }
