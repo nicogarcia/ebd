@@ -135,19 +135,24 @@ public class AdminScreen extends JFrame implements ActionListener,
 	}
 
 	public void actionPerformed(ActionEvent arg0) {
-		Result res = me.execQuery(queryText.getText());
-
-		resultTableModel.setColumnCount(0);
-		resultTableModel.setRowCount(0);
-
-		resultTableModel.setColumnCount(res.getColumnCount());
-		resultTableModel.setColumnIdentifiers(res.getColumnLabels());
-
-		for (String[] row : res) {
-			resultTableModel.addRow(row);
+		String consulta = queryText.getText();
+		if (consulta.startsWith("INSERT")||consulta.startsWith("Insert") || consulta.startsWith("insert")){
+			me.execInsert(consulta);
+		}else{
+			Result res = me.execQuery(consulta);
+	
+			resultTableModel.setColumnCount(0);
+			resultTableModel.setRowCount(0);
+	
+			resultTableModel.setColumnCount(res.getColumnCount());
+			resultTableModel.setColumnIdentifiers(res.getColumnLabels());
+	
+			for (String[] row : res) {
+				resultTableModel.addRow(row);
+			}
+	
+			res.closeQuery();
 		}
-
-		res.closeQuery();
 	}
 
 	private final int width = 500;
