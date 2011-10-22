@@ -23,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
 
 import logic.InspectorUser;
 import logic.Result;
@@ -42,8 +41,6 @@ import logic.User;
  */
 public class InspectorScreen extends JFrame {
 
-	private final int width = 500;
-	private final int height = 300;
 	private JButton botonConectar;
 	private JComboBox boxParquimetro;
 	private JButton BotonIngresar;
@@ -66,7 +63,6 @@ public class InspectorScreen extends JFrame {
 	private ThreadHorayFecha thread;
 	private Hashtable<String, Integer> listaPatentes;
 
-	private final int ESTA = 7;
 	private final int NOESTA = 9;
 
 	public InspectorScreen(User user) {

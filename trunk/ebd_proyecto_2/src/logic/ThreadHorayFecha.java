@@ -8,7 +8,6 @@ import javax.swing.JLabel;
 public class ThreadHorayFecha extends Thread {
 	 private JLabel fecha;
 	 private JLabel hora;
-	 private Date dia;
 	
      public ThreadHorayFecha(JLabel hor,JLabel fech) {
     	 	hora=hor;

@@ -1,12 +1,10 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -63,14 +60,10 @@ public class AdminScreen extends JFrame implements ActionListener,
 				jPanel1.add(jScrollPane1, BorderLayout.CENTER);
 				jScrollPane1.setPreferredSize(new java.awt.Dimension(610, 80));
 				jScrollPane1.setAutoscrolls(true);
-				jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 				{
 					queryText = new JTextArea();
 					queryText.setText("select * from automoviles");
 					jScrollPane1.setViewportView(queryText);
-					queryText.setLineWrap(true);
-					queryText.setBorder(new LineBorder(Color.black));
-					queryText.setPreferredSize(new java.awt.Dimension(591, 87));
 				}
 			}
 		}
@@ -91,7 +84,6 @@ public class AdminScreen extends JFrame implements ActionListener,
 		{
 			panelScroll = new JScrollPane();
 			resultPane.add(panelScroll, BorderLayout.CENTER);
-			panelScroll.setPreferredSize(new java.awt.Dimension(686, 303));
 			{
 				result = new JTable(resultTableModel);
 				panelScroll.setViewportView(result);
@@ -99,14 +91,13 @@ public class AdminScreen extends JFrame implements ActionListener,
 		}
 		resultHeader = result.getTableHeader();
 		resultPane.add(result.getTableHeader(), BorderLayout.NORTH);
+		resultPane.setBorder(BorderFactory.createTitledBorder("Resultado de la consulta SQL"));
 
 		add(tablesPane, BorderLayout.SOUTH);
 		tablesPane.setLayout(tablesPaneLayout);
-		tablesPane.setPreferredSize(new java.awt.Dimension(686, 144));
 		{
 			panel11 = new JScrollPane();
 			tablesPane.add(panel11, BorderLayout.WEST);
-			panel11.setPreferredSize(new java.awt.Dimension(169, 103));
 			panel11.setBorder(BorderFactory.createTitledBorder("Tablas"));
 			{
 				tableList = new JList();
@@ -115,14 +106,11 @@ public class AdminScreen extends JFrame implements ActionListener,
 				refreshTables();
 				tableList.addListSelectionListener(this);
 				tableList.setModel(tablesListModel);
-				tableList.setBorder(new LineBorder(Color.black));
-				tableList.setPreferredSize(new java.awt.Dimension(151, 101));
 			}
 		}
 		{
 			panel2 = new JScrollPane();
 			tablesPane.add(panel2, BorderLayout.CENTER);
-			panel2.setPreferredSize(new java.awt.Dimension(517, 103));
 			panel2.setBorder(BorderFactory.createTitledBorder(null,
 					"Atributos", TitledBorder.LEADING,
 					TitledBorder.DEFAULT_POSITION));
@@ -132,9 +120,7 @@ public class AdminScreen extends JFrame implements ActionListener,
 				tablesAttrListModel = new DefaultListModel();
 				tableList.setSelectedIndex(0);
 				refreshAttributes();
-				tableAttrs.setBorder(new LineBorder(Color.black));
 				tableAttrs.setModel(tablesAttrListModel);
-				tableAttrs.setPreferredSize(new java.awt.Dimension(100, 100));
 			}
 		}
 
@@ -207,9 +193,6 @@ public class AdminScreen extends JFrame implements ActionListener,
 
 		res.closeQuery();
 	}
-
-	private final int width = 700;
-	private final int height = 500;
 
 	DefaultTableModel resultTableModel;
 	DefaultListModel tablesListModel;
