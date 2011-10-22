@@ -3,9 +3,12 @@ package logic;
 import gui.AdminScreen;
 import gui.InspectorScreen;
 import gui.SellerScreen;
-import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class User {
 

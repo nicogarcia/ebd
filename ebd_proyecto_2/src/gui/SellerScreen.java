@@ -1,19 +1,12 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.Vector;
 
-import javax.swing.BorderFactory;
-import javax.swing.ComboBoxModel;
 import javax.swing.DebugGraphics;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -22,11 +15,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
 import logic.Result;
@@ -52,8 +42,6 @@ public class SellerScreen extends JFrame {
 
 	private User me;
 
-	private final int width = 500;
-	private final int height = 300;
 	private JPanel panel;
 	private JLabel imageLabel;
 	private JLabel jLabel2;
@@ -65,14 +53,13 @@ public class SellerScreen extends JFrame {
 	private JPanel panelMensajes;
 	private JComboBox boxTipoCospel;
 	private JButton botonCargar;
-	private JLabel labelCospel;
 	private JComboBox boxPatente;
 	private JLabel labelPatente;
 
 	private void initGui() {
 
 		setTitle("Sistema de Parquimetros - Usuario: Vendedor");
-		this.setPreferredSize(new java.awt.Dimension(522, 360));
+		this.setPreferredSize(new java.awt.Dimension(514, 501));
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		{
@@ -93,7 +80,7 @@ public class SellerScreen extends JFrame {
 		}
 
 		pack();
-		this.setSize(522, 360);
+		this.setSize(514, 501);
 	}
 
 	private JButton getBotonCargar() {

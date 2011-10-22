@@ -124,7 +124,7 @@ public class LoginScreen extends javax.swing.JFrame {
 				{
 					jPanel1 = new JPanel();
 					panelBotones.add(jPanel1);
-					jPanel1.setPreferredSize(new java.awt.Dimension(319, 59));
+					jPanel1.setPreferredSize(new java.awt.Dimension(457, 59));
 					{
 						jPanel2 = new JPanel();
 						GridLayout jPanel2Layout = new GridLayout(2, 1);
@@ -134,7 +134,7 @@ public class LoginScreen extends javax.swing.JFrame {
 						jPanel2Layout.setVgap(5);
 						jPanel1.add(jPanel2);
 						jPanel2.setLayout(jPanel2Layout);
-						jPanel2.setPreferredSize(new java.awt.Dimension(81, 43));
+						jPanel2.setPreferredSize(new java.awt.Dimension(124, 43));
 						{
 							labelLegajo = new JLabel();
 							jPanel2.add(labelLegajo);
@@ -142,14 +142,14 @@ public class LoginScreen extends javax.swing.JFrame {
 							labelLegajo
 									.setPreferredSize(new java.awt.Dimension(
 											103, 19));
+							labelLegajo.setHorizontalAlignment(SwingConstants.CENTER);
 						}
 						{
 							labelPassword = new JLabel();
 							jPanel2.add(labelPassword);
 							labelPassword.setText("Contraseña");
-							labelPassword
-									.setPreferredSize(new java.awt.Dimension(
-											88, 19));
+							labelPassword.setPreferredSize(new java.awt.Dimension(114, 19));
+							labelPassword.setHorizontalAlignment(SwingConstants.CENTER);
 						}
 					}
 					{
@@ -210,9 +210,6 @@ public class LoginScreen extends javax.swing.JFrame {
 	private void hideLegajo(boolean b) {
 		textLegajo.setVisible(b);
 		labelLegajo.setVisible(b);
-		textLegajo.setText("12");
-		if(!b)
-			textPassword.setText("fieresu");
 		textLegajo.requestFocusInWindow();
 		textLegajo.selectAll();
 	}

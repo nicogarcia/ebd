@@ -1,8 +1,5 @@
 package app;
 
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import gui.LoginScreen;
 import logic.DBAccess;
 
@@ -22,10 +19,7 @@ public class Main {
 		} catch (UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}*/
-
-		// new StartScreen();
-		
-		//FIXME BORRAR CONTRASEÑAS!!
+	
 		new LoginScreen();
 	}
 
