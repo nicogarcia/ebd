@@ -36,6 +36,7 @@ public class LoginScreen extends javax.swing.JFrame {
 
 	private static final Object USERNAME = new Object();
 	private JButton selectedButton;
+	private JButton botonEstacionar;
 	private JPanel jPanel1;
 	private JLabel labelLegajo;
 	private JTextField textLegajo;
@@ -60,7 +61,7 @@ public class LoginScreen extends javax.swing.JFrame {
 	private void initGUI() {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			this.setPreferredSize(new java.awt.Dimension(688, 383));
+			this.setPreferredSize(new java.awt.Dimension(927, 382));
 
 			// CENTER TO THE SCREEN
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -71,7 +72,7 @@ public class LoginScreen extends javax.swing.JFrame {
 			{
 				panelBotones = new JPanel();
 				getContentPane().add(panelBotones, BorderLayout.CENTER);
-				panelBotones.setPreferredSize(new java.awt.Dimension(684, 356));
+				panelBotones.setPreferredSize(new java.awt.Dimension(969, 320));
 				{
 					botonAdmin = new JButton();
 					panelBotones.add(botonAdmin);
@@ -120,6 +121,19 @@ public class LoginScreen extends javax.swing.JFrame {
 						}
 					});
 					botonVenta.putClientProperty(USERNAME, "venta");
+				}
+				{
+					botonEstacionar = new JButton();
+					panelBotones.add(botonEstacionar);
+					botonEstacionar.setText("Venta");
+					botonEstacionar.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/cartel.jpg")));
+					botonEstacionar.setPreferredSize(new java.awt.Dimension(200, 280));
+					botonEstacionar.setSize(100, 22);
+					botonEstacionar.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent evt) {
+							botonEstacionarActionPerformed(evt);
+						}
+					});
 				}
 				{
 					jPanel1 = new JPanel();
@@ -189,7 +203,7 @@ public class LoginScreen extends javax.swing.JFrame {
 			}
 			buttonClicked(null, botonAdmin);
 			pack();
-			this.setSize(688, 383);
+			this.setSize(927, 382);
 		} catch (Exception e) {
 			// add your error handling code here
 			e.printStackTrace();
@@ -238,5 +252,10 @@ public class LoginScreen extends javax.swing.JFrame {
 				dispose();
 			}
 		}
+	}
+	
+	private void botonEstacionarActionPerformed(ActionEvent evt) {
+		new ParkingScreen();
+		dispose();
 	}
 }
