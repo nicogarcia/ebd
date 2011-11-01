@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -35,7 +36,6 @@ public class ParkPanel extends JPanel implements MouseMotionListener,
 	Image mouse;
 	Rectangle2D imgBounds;
 	Point mousePos = new Point(0, 0);
-	boolean isInside = true;
 
 	public ParkPanel() {
 		super();
@@ -62,15 +62,16 @@ public class ParkPanel extends JPanel implements MouseMotionListener,
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D e = (Graphics2D) g;
+		
+		e.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		setOpaque(false);
 		g.drawImage(img, (int) imgBounds.getX(), (int) imgBounds.getY(),
 				img.getWidth(null), img.getHeight(null), null);
 
 		e.setColor(Color.yellow);
-		e.setStroke(new BasicStroke(3));
+		e.setStroke(new BasicStroke(5));
 		e.draw(ellipse);
 
-		if (isInside)
 			g.drawImage(mouse, mousePos.x - 32, mousePos.y - 32, 64, 143, null);
 	}
 

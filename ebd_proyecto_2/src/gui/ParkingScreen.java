@@ -55,7 +55,6 @@ public class ParkingScreen extends javax.swing.JFrame {
 				
 				parkPanel = new ParkPanel();
 				panelParq.add(parkPanel, BorderLayout.CENTER);
-				panelParq.addMouseMotionListener(parkPanel);
 				parkPanel.addMouseMotionListener(parkPanel);
 				parkPanel.addMouseListener(parkPanel);
 			}
