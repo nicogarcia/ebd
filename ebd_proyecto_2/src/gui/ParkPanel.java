@@ -36,10 +36,11 @@ public class ParkPanel extends JPanel implements MouseMotionListener,
 	Image mouse;
 	Rectangle2D imgBounds;
 	Point mousePos = new Point(0, 0);
+	ParkingScreen parent;
 
-	public ParkPanel() {
+	public ParkPanel(ParkingScreen pk) {
 		super();
-
+		parent = pk;
 		ellipse = new Ellipse2D.Double(165, 540, 50, 50);
 		imgBounds = new Rectangle2D.Double();
 
@@ -62,8 +63,9 @@ public class ParkPanel extends JPanel implements MouseMotionListener,
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D e = (Graphics2D) g;
-		
-		e.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		e.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
 		setOpaque(false);
 		g.drawImage(img, (int) imgBounds.getX(), (int) imgBounds.getY(),
 				img.getWidth(null), img.getHeight(null), null);
@@ -72,7 +74,7 @@ public class ParkPanel extends JPanel implements MouseMotionListener,
 		e.setStroke(new BasicStroke(5));
 		e.draw(ellipse);
 
-			g.drawImage(mouse, mousePos.x - 32, mousePos.y - 32, 64, 143, null);
+		g.drawImage(mouse, mousePos.x - 32, mousePos.y - 32, 64, 143, null);
 	}
 
 	@Override
@@ -90,7 +92,7 @@ public class ParkPanel extends JPanel implements MouseMotionListener,
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		if (ellipse.contains(arg0.getPoint()))
-			JOptionPane.showMessageDialog(this, "Ingreso al estacionamiento");
+			parent.conectar();
 	}
 
 	@Override

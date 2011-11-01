@@ -255,7 +255,7 @@ public class LoginScreen extends javax.swing.JFrame {
 	}
 	
 	private void botonEstacionarActionPerformed(ActionEvent evt) {
-		new ParkingScreen();
+		new ParkingScreen(DBAccess.login("parquimetro","parq", false));
 		dispose();
 	}
 }
