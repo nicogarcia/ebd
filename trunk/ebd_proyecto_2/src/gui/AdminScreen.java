@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -50,6 +51,7 @@ public class AdminScreen extends JFrame implements ActionListener,
 
 		queryPane = new JPanel(new BorderLayout());
 		queryPane.add(runQuery, BorderLayout.EAST);
+		addWindowListener(new CloseListener());
 		{
 			jPanel1 = new JPanel();
 			BorderLayout jPanel1Layout = new BorderLayout();
@@ -124,12 +126,15 @@ public class AdminScreen extends JFrame implements ActionListener,
 			}
 		}
 
+
+		this.setIconImage(new ImageIcon(getClass().getClassLoader()
+				.getResource("img/cartel.jpg")).getImage());
 		setTitle("Sistema de Parquimetros - Usuario: admin");
 		this.setPreferredSize(new java.awt.Dimension(696, 542));
 		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		pack();
 	}
 

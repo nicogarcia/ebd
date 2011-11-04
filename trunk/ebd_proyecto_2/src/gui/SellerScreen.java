@@ -1,9 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -57,11 +59,21 @@ public class SellerScreen extends JFrame {
 	private JLabel labelPatente;
 
 	private void initGui() {
-
-		setTitle("Sistema de Parquimetros - Usuario: Vendedor");
+		
+		setTitle("Sistema de Parquimetros - Usuario: venta");
+		this.setIconImage(new ImageIcon(getClass().getClassLoader()
+				.getResource("img/cartel.jpg")).getImage());
 		this.setPreferredSize(new java.awt.Dimension(514, 501));
+
+		
+		// CENTER TO THE SCREEN
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((screenSize.width - getPreferredSize().width) / 2,
+				(screenSize.height - getPreferredSize().height) / 2);
+		
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		addWindowListener(new CloseListener());
 		{
 			panel = new JPanel();
 			BorderLayout panelLayout = new BorderLayout();
@@ -148,7 +160,7 @@ public class SellerScreen extends JFrame {
 			es = false;
 		}
 		if (es) {
-			if (saldo < 100 && saldo > 0) {
+			if (saldo < 1000 && saldo > 0) {
 				String sql = "INSERT INTO `cospeles` (`id_cospel`, `saldo`, `tipo`, `patente`) VALUES (NULL, '"
 						+ saldo
 						+ "', '"

@@ -1,7 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -14,6 +16,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -75,10 +78,19 @@ public class InspectorScreen extends JFrame {
 
 	private void initGui() {
 
-		setTitle("Sistema de Parquimetros - Usuario: Inspector");
+		setTitle("Sistema de Parquimetros - Usuario: inspector");
+		this.setIconImage(new ImageIcon(getClass().getClassLoader()
+				.getResource("img/cartel.jpg")).getImage());
 		this.setPreferredSize(new java.awt.Dimension(763, 428));
+
+		// CENTER TO THE SCREEN
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((screenSize.width - getPreferredSize().width) / 2,
+				(screenSize.height - getPreferredSize().height) / 2);
+
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		addWindowListener(new CloseListener());
 		{
 			panelPrincipal = new JPanel();
 			BorderLayout panelPrincipalLayout = new BorderLayout();
@@ -247,10 +259,9 @@ public class InspectorScreen extends JFrame {
 			registrarAcceso(parquimetro);
 			determinarNoRegistrados(parquimetro);
 			listaPatentes.clear();
-		}else {
+		} else {
 			mensajeTexto.setText(mensajeTexto.getText()
-					+ "No puede acceder al parquimetro."
-					+ "\n\n");
+					+ "No puede acceder al parquimetro." + "\n\n");
 		}
 	}
 
@@ -374,6 +385,10 @@ public class InspectorScreen extends JFrame {
 			}
 
 			boxParquimetro.setModel(cbm);
+		} else {
+			mensajeTexto
+					.setText(mensajeTexto.getText()
+							+ "Actualmente no hay parquimetros habilitados para este inspector\n");
 		}
 		res.closeQuery();
 	}

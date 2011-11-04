@@ -7,15 +7,13 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.basic.ComboPopup;
-import javax.swing.SwingUtilities;
 
 import logic.Result;
 import logic.User;
@@ -36,6 +34,7 @@ public class ParkingScreen extends javax.swing.JFrame {
 	private JComboBox comboCospel;
 	private JComboBox comboNroParq;
 	private JComboBox comboCalle;
+	private JLabel jLabel4;
 	private JLabel jLabel3;
 	private JComboBox comboAltura;
 	private JPanel jPanel5;
@@ -47,8 +46,6 @@ public class ParkingScreen extends javax.swing.JFrame {
 	private JPanel panelParq;
 	private ParkPanel parkPanel;
 	private User me;
-	private String calle;
-	private String altura;
 
 	public ParkingScreen(User user) {
 		super();
@@ -58,7 +55,11 @@ public class ParkingScreen extends javax.swing.JFrame {
 
 	private void initGUI() {
 		try {
-			setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			addWindowListener(new CloseListener());
+			this.setIconImage(new ImageIcon(getClass().getClassLoader()
+					.getResource("img/cartel.jpg")).getImage());
+			this.setTitle("Sistema de Parquimetros - Usuario: parquimetro");
 			{
 				panelParq = new JPanel();
 				BorderLayout panelParqLayout = new BorderLayout();
@@ -67,23 +68,23 @@ public class ParkingScreen extends javax.swing.JFrame {
 				panelParq.setBorder(BorderFactory.createTitledBorder(null,
 						"Parquimetro", TitledBorder.LEADING,
 						TitledBorder.DEFAULT_POSITION));
-
-				parkPanel = new ParkPanel(this);
-				panelParq.add(parkPanel, BorderLayout.CENTER);
-				parkPanel.addMouseMotionListener(parkPanel);
-				parkPanel.addMouseListener(parkPanel);
+				panelParq.setPreferredSize(new java.awt.Dimension(740, -151));
+				{
+					parkPanel = new ParkPanel(this);
+					panelParq.add(parkPanel, BorderLayout.CENTER);
+					parkPanel.addMouseMotionListener(parkPanel);
+					parkPanel.addMouseListener(parkPanel);
+				}
+				
 			}
 			{
 				panelControles = new JPanel();
-				getContentPane().add(panelControles, BorderLayout.WEST);
-				panelControles
-						.setPreferredSize(new java.awt.Dimension(246, 670));
-				panelControles.setBorder(BorderFactory
-						.createTitledBorder("Controles"));
+				getContentPane().add(panelControles, BorderLayout.NORTH);
+				panelControles.setPreferredSize(new java.awt.Dimension(740, 72));
 				{
 					jPanel2 = new JPanel();
 					panelControles.add(jPanel2);
-					jPanel2.setPreferredSize(new java.awt.Dimension(230, 141));
+					jPanel2.setPreferredSize(new java.awt.Dimension(495, 63));
 					jPanel2.setBorder(BorderFactory
 							.createTitledBorder("Seleccione parquimetro"));
 					{
@@ -97,8 +98,7 @@ public class ParkingScreen extends javax.swing.JFrame {
 						{
 							comboCalle = new JComboBox();
 							jPanel3.add(comboCalle);
-							comboCalle.setPreferredSize(new java.awt.Dimension(
-									70, 22));
+							comboCalle.setPreferredSize(new java.awt.Dimension(107, 21));
 							comboCalle.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
 									llenarAltura();
@@ -150,7 +150,12 @@ public class ParkingScreen extends javax.swing.JFrame {
 					panelControles.add(jPanel1);
 					jPanel1.setBorder(BorderFactory
 							.createTitledBorder("Seleccione cospel"));
-					jPanel1.setPreferredSize(new java.awt.Dimension(229, 53));
+					jPanel1.setPreferredSize(new java.awt.Dimension(229, 61));
+					{
+						jLabel4 = new JLabel();
+						jPanel1.add(jLabel4);
+						jLabel4.setText("Nro. cospel");
+					}
 					{
 						ComboBoxModel comboCospelModel = new DefaultComboBoxModel(
 								new String[] { "Item One", "Item Two" });
@@ -167,7 +172,8 @@ public class ParkingScreen extends javax.swing.JFrame {
 					(String) comboAltura.getSelectedItem());
 			pack();
 			setVisible(true);
-			setSize(750, 700);
+			this.setResizable(false);
+			this.setSize(750, 670);
 		} catch (Exception e) {
 			// add your error handling code here
 			e.printStackTrace();
@@ -177,8 +183,11 @@ public class ParkingScreen extends javax.swing.JFrame {
 	private void llenarCospeles() {
 		Result resu = me.execute("SELECT id_cospel FROM cospeles");
 		DefaultComboBoxModel comb = new DefaultComboBoxModel();
-		for (String[] row : resu) {
-			comb.addElement(row[0]);
+
+		if (!resu.hasFailed()) {
+			for (String[] row : resu) {
+				comb.addElement(row[0]);
+			}
 		}
 		comboCospel.setModel(comb);
 	}
@@ -186,8 +195,11 @@ public class ParkingScreen extends javax.swing.JFrame {
 	private void llenarCalle() {
 		Result resu = me.execute("SELECT DISTINCT calle FROM ubicaciones");
 		DefaultComboBoxModel comb = new DefaultComboBoxModel();
-		for (String[] row : resu) {
-			comb.addElement(row[0]);
+
+		if (!resu.hasFailed()) {
+			for (String[] row : resu) {
+				comb.addElement(row[0]);
+			}
 		}
 		comboCalle.setModel(comb);
 	}
@@ -197,8 +209,11 @@ public class ParkingScreen extends javax.swing.JFrame {
 				.execute("SELECT altura FROM ubicaciones WHERE calle = '"
 						+ comboCalle.getSelectedItem() + "'");
 		DefaultComboBoxModel comb = new DefaultComboBoxModel();
-		for (String[] row : resu) {
-			comb.addElement(row[0]);
+
+		if (!resu.hasFailed()) {
+			for (String[] row : resu) {
+				comb.addElement(row[0]);
+			}
 		}
 		comboAltura.setModel(comb);
 	}
@@ -208,8 +223,11 @@ public class ParkingScreen extends javax.swing.JFrame {
 				.execute("SELECT id_parq FROM parquimetros where calle = '"
 						+ calle + "' AND altura ='" + alt + "'");
 		DefaultComboBoxModel comb = new DefaultComboBoxModel();
-		for (String[] row : resu) {
-			comb.addElement(row[0]);
+
+		if (!resu.hasFailed()) {
+			for (String[] row : resu) {
+				comb.addElement(row[0]);
+			}
 		}
 		comboNroParq.setModel(comb);
 	}
@@ -218,22 +236,23 @@ public class ParkingScreen extends javax.swing.JFrame {
 		Result res = me.execute("call conectar("
 				+ comboCospel.getSelectedItem() + " ,"
 				+ comboNroParq.getSelectedItem() + ")");
-		String[] row = res.getCurrentRow();
-		String msg = "";
-		int msgtype = JOptionPane.INFORMATION_MESSAGE;
-		if (row[0].equals("Apertura")) {
-			if (row[1].equals("1")) {
-				msg += "Entrada al estacionamiento.\nTiempo maximo: " + row[2]
-						+ " minutos.";
+			String[] row = res.getCurrentRow();
+			String msg = "";
+			int msgtype = JOptionPane.INFORMATION_MESSAGE;
+			if (row[0].equals("Apertura")) {
+				if (row[1].equals("1")) {
+					msg += "Entrada al estacionamiento.\nTiempo maximo: "
+							+ row[2] + " minutos.";
+				} else {
+					msg += "No tiene suficiente saldo para estacionar";
+					msgtype = JOptionPane.ERROR_MESSAGE;
+				}
 			} else {
-				msg += "No tiene suficiente saldo para estacionar";
-				msgtype = JOptionPane.ERROR_MESSAGE;
+				msg += "Salida del estacionamiento.\nTiempo transcurrido: "
+						+ row[1] + " minutos.\nSu saldo es: $" + row[2] + ".";
 			}
-		} else {
-			msg += "Salida del estacionamiento.\nTiempo transcurrido: "
-					+ row[1] + " minutos.\nSu saldo es: $" + row[2] + ".";
-		}
-		JOptionPane.showMessageDialog(this, msg, "Parquimetro", msgtype);
+			JOptionPane.showMessageDialog(this, msg, "Parquimetro", msgtype);
+		
 	}
 
 }
