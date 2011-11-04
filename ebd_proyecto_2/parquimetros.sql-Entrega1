@@ -274,20 +274,8 @@ CREATE TABLE IF NOT EXISTS `ubicaciones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Estructura de tabla para la tabla `ventas`
+-- Volcar la base de datos para la tabla `ubicaciones`
 --
-
-CREATE TABLE IF NOT EXISTS `ventas` (
-  `id_cospel` int(11) unsigned NOT NULL,
-  `tipo` varchar(45) NOT NULL,
-  `saldo` decimal(5,2) NOT NULL,
-  `fecha` date NOT NULL,
-  `hora` time NOT NULL,
-  KEY `id_cospel` (`id_cospel`),
-  KEY `tipo` (`tipo`),
-  KEY `saldo` (`saldo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -351,13 +339,6 @@ ALTER TABLE `multa`
 ALTER TABLE `parquimetros`
   ADD CONSTRAINT `ForeingKey_calle_altura_ubicaciones` FOREIGN KEY (`calle`, `altura`) REFERENCES `ubicaciones` (`calle`, `altura`);
 
---
--- Filtros para la tabla `ventas`
---
-ALTER TABLE `ventas`
-  ADD CONSTRAINT `ventas_ibfk_1` FOREIGN KEY (`id_cospel`) REFERENCES `cospeles` (`id_cospel`),
-  ADD CONSTRAINT `ventas_ibfk_2` FOREIGN KEY (`tipo`) REFERENCES `cospeles` (`tipo`);
-
 
 -- Usuarios
 
@@ -367,16 +348,7 @@ CREATE USER venta IDENTIFIED BY 'venta';
 
 CREATE USER inspector IDENTIFIED BY 'inspector';
 
-CREATE USER parquimetro IDENTIFIED BY 'parq';
-
 GRANT ALL PRIVILEGES ON `parquimetros`.* TO 'admin'@'localhost' WITH GRANT OPTION;
-
-GRANT INSERT ON parquimetros.estacionamientos TO parquimetro;
-GRANT SELECT ON parquimetros.estacionamientos TO parquimetro;
-GRANT SELECT ON parquimetros.cospeles TO parquimetro;
-GRANT SELECT ON parquimetros.ubicaciones TO parquimetro;
-GRANT SELECT ON parquimetros.parquimetros TO parquimetro;
-GRANT EXECUTE ON PROCEDURE parquimetros.conectar to parquimetro;
 
 GRANT INSERT ON parquimetros.cospeles TO venta;
 GRANT SELECT ON parquimetros.tipos_cospeles TO venta;
@@ -390,62 +362,3 @@ GRANT SELECT ON parquimetros.asociado_con TO inspector;
 
 GRANT SELECT, INSERT ON parquimetros.multa TO inspector;
 GRANT SELECT, INSERT ON parquimetros.accede TO inspector;
-
-
-
-delimiter !
-CREATE TRIGGER ventasCreacion
-	AFTER INSERT on cospeles
-	FOR EACH ROW
-	 begin
-		declare fecha DATE;
-		declare hora TIME;
-		SELECT date(now()) into fecha;
-		SELECT time(now()) into hora;
-		INSERT INTO `ventas` (`id_cospel`, `tipo`, `saldo`, `fecha`, `hora`) VALUES
-				(NEW.id_cospel, NEW.tipo, NEW.saldo, fecha, hora);
-	end;!
-create procedure conectar (IN cospel INT(11), IN parq INT(11))
-begin
-	declare tiempo FLOAT;
-	declare tari FLOAT;
-	declare descu FLOAT;
-	declare sal DECIMAL(5,2);
-	declare fecha,dia_entr DATE;
-	declare hora,hora_entr TIME;
-	declare cont INT;
-	declare entrada DATETIME;
-	declare salida DATETIME;
-	
-		
-	SELECT date(now()) into fecha;
-	SELECT time(now()) into hora;
-	SELECT saldo into sal FROM cospeles WHERE id_cospel = cospel;
-	SELECT tarifa into tari FROM parquimetros NATURAL JOIN ubicaciones WHERE id_parq = parq;
-	SELECT descuento into descu FROM cospeles NATURAL JOIN tipos_cospeles WHERE id_cospel = cospel;
-	SELECT count(id_cospel) into cont from estacionamientos NATURAL JOIN parquimetros WHERE id_cospel=cospel AND id_parq=parq AND hora_sal 			is NULL AND fecha_sal is NULL;
-	if cont=0 then
-		select truncate(sal/(tari*(1-descu)),0) into tiempo;
-		if tiempo>0 then
-			INSERT INTO `estacionamientos` (`id_cospel`, `id_parq`, `fecha_ent`, `hora_ent`, `fecha_sal`, `hora_sal`) VALUES
-				(cospel, parq, fecha, hora, NULL, NULL);
-			SELECT 'Apertura' as operacion, 1 as resulto, tiempo as tiempo;
-		else
-			SELECT 'Apertura' as operacion, 0 as resulto, 0 as tiempo;
-			
-		end if;
-	else
-		SELECT fecha_ent into dia_entr from estacionamientos NATURAL JOIN parquimetros WHERE id_cospel=cospel AND id_parq=parq AND fecha_sal 			is NULL AND hora_sal is NULL;
-		SELECT hora_ent into hora_entr from estacionamientos NATURAL JOIN parquimetros WHERE id_cospel=cospel AND id_parq=parq AND hora_sal 			is NULL AND fecha_sal is NULL;
-		set entrada = dia_entr;
-		SELECT addtime(entrada,hora_entr) into entrada;
-		set salida = fecha;
-		SELECT addtime(salida,hora) into salida;
-		select truncate(time_to_sec(timediff(salida,entrada))/60,0) into tiempo;
-		set sal = sal -tiempo*(tari*(1-descu));
-		UPDATE `estacionamientos` set fecha_sal = fecha, hora_sal = hora where fecha_sal is null and hora_sal is null and id_cospel = cospel 			and id_parq = parq;
-		UPDATE `cospeles` set saldo = sal where id_cospel=cospel;
-		SELECT 'Cierre' as operacion, tiempo as tiempo_transcurrido, sal as saldo_nuevo;
-	end if;
-end; !
-delimiter ;
