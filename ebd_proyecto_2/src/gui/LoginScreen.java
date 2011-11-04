@@ -62,13 +62,15 @@ public class LoginScreen extends javax.swing.JFrame {
 		try {
 			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			this.setPreferredSize(new java.awt.Dimension(927, 382));
+			this.setIconImage(new ImageIcon(getClass().getClassLoader()
+					.getResource("img/cartel.jpg")).getImage());
+			setTitle("Sistema de Parquimetros");
 
 			// CENTER TO THE SCREEN
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			setLocation((screenSize.width - getPreferredSize().width) / 2,
 					(screenSize.height - getPreferredSize().height) / 2);
 
-			this.setVisible(true);
 			{
 				panelBotones = new JPanel();
 				getContentPane().add(panelBotones, BorderLayout.CENTER);
@@ -97,7 +99,9 @@ public class LoginScreen extends javax.swing.JFrame {
 					botonInspector.setSize(100, 22);
 					botonInspector.setPreferredSize(new java.awt.Dimension(200,
 							280));
-					botonInspector.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/inspector.png")));
+					botonInspector
+							.setIcon(new ImageIcon(getClass().getClassLoader()
+									.getResource("img/inspector.png")));
 					botonInspector.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent evt) {
 							buttonClicked(evt, botonInspector);
@@ -125,9 +129,11 @@ public class LoginScreen extends javax.swing.JFrame {
 				{
 					botonEstacionar = new JButton();
 					panelBotones.add(botonEstacionar);
-					botonEstacionar.setText("Venta");
-					botonEstacionar.setIcon(new ImageIcon(getClass().getClassLoader().getResource("img/cartel.jpg")));
-					botonEstacionar.setPreferredSize(new java.awt.Dimension(200, 280));
+					botonEstacionar.setText("Parquimetro");
+					botonEstacionar.setIcon(new ImageIcon(getClass()
+							.getClassLoader().getResource("img/cartel.jpg")));
+					botonEstacionar.setPreferredSize(new java.awt.Dimension(
+							200, 280));
 					botonEstacionar.setSize(100, 22);
 					botonEstacionar.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent evt) {
@@ -156,14 +162,18 @@ public class LoginScreen extends javax.swing.JFrame {
 							labelLegajo
 									.setPreferredSize(new java.awt.Dimension(
 											103, 19));
-							labelLegajo.setHorizontalAlignment(SwingConstants.CENTER);
+							labelLegajo
+									.setHorizontalAlignment(SwingConstants.CENTER);
 						}
 						{
 							labelPassword = new JLabel();
 							jPanel2.add(labelPassword);
 							labelPassword.setText("Contraseña");
-							labelPassword.setPreferredSize(new java.awt.Dimension(114, 19));
-							labelPassword.setHorizontalAlignment(SwingConstants.CENTER);
+							labelPassword
+									.setPreferredSize(new java.awt.Dimension(
+											114, 19));
+							labelPassword
+									.setHorizontalAlignment(SwingConstants.CENTER);
 						}
 					}
 					{
@@ -201,8 +211,10 @@ public class LoginScreen extends javax.swing.JFrame {
 					}
 				}
 			}
+
 			buttonClicked(null, botonAdmin);
 			pack();
+			this.setVisible(true);
 			this.setSize(927, 382);
 		} catch (Exception e) {
 			// add your error handling code here
@@ -253,9 +265,9 @@ public class LoginScreen extends javax.swing.JFrame {
 			}
 		}
 	}
-	
+
 	private void botonEstacionarActionPerformed(ActionEvent evt) {
-		new ParkingScreen(DBAccess.login("parquimetro","parq", false));
+		new ParkingScreen(DBAccess.login("parquimetro", "parq", false));
 		dispose();
 	}
 }
